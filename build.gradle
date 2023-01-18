@@ -1,0 +1,58 @@
+plugins {
+    id 'com.gradle.plugin-publish' version '1.1.0'
+}
+
+version = '0.1.0'
+group = 'io.github.thatrobin.docky'
+archivesBaseName = 'Docky'
+description = 'A plugin to generate documentation for apoli addons'
+
+String vendor = 'Docky'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly gradleApi()
+
+    implementation group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.14'
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.14'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.10'
+
+    compileOnly group: 'org.jetbrains', name: 'annotations', version: '+'
+}
+
+gradlePlugin {
+    plugins {
+        docky {
+            id = 'io.github.thatrobin.docky'
+            implementationClass = 'io.github.thatrobin.docky.Docky'
+            displayName = 'Docky'
+        }
+    }
+}
+
+pluginBundle {
+    website = 'https://thatrobin.github.io'
+    vcsUrl = 'https://github.com/ThatRobin/Docky'
+    description = 'A plugin to generate documentation for apoli addons'
+    tags = ['minecraft', 'apoli']
+}
+
+publishing {
+    repositories {
+        maven {
+            name = 'localPluginRepository'
+            url = '../local-plugin-repository'
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.release.set(8)
+}
