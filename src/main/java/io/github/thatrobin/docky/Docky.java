@@ -1,23 +1,10 @@
 package io.github.thatrobin.docky;
 
-import org.gradle.api.Plugin;
-import org.gradle.api.Project;
-import org.gradle.api.tasks.TaskContainer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class Docky implements Plugin<Project> {
+public class Docky {
 
-    @Override
-    public void apply(final Project project) {
-        project.getExtensions().create("docky", DockyExtension.class, project);
-        project.getLogger().debug("Created the `docky` extension.");
+    public static final Logger LOGGER = LogManager.getLogger(Docky.class);
 
-        TaskContainer tasks = project.getTasks();
-        tasks.register("createDocs", TaskModrinthUpload.class, task -> {
-            task.setGroup("docky");
-            task.setDescription("Create documentation");
-        });
-        project.getLogger().debug("Registered the `createDocs` task.");
-
-        project.getLogger().debug("Successfully applied the Docky plugin!");
-    }
 }

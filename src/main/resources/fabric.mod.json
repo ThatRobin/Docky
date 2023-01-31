@@ -1,0 +1,22 @@
+{
+    "schemaVersion": 1,
+    "id": "docky",
+    "version": "${version}",
+    "name": "Docky",
+    "description": "An Apoli addon made to implement some features that I thought would be useful for datapack and origin developers.",
+    "authors": [],
+    "contact": {},
+    "license": "MIT",
+    "icon": "assets/docky/icon.png",
+    "environment": "*",
+    "entrypoints": {
+    },
+    "mixins": [
+        "docky.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.14.8",
+        "fabric": "*",
+        "minecraft": ">=1.19"
+    }
+}

@@ -1,30 +1,78 @@
 plugins {
     id 'com.gradle.plugin-publish' version '1.1.0'
+    id 'fabric-loom' version '0.12-SNAPSHOT'
 }
 
-version = '0.1.0'
+version = '0.1.1'
 group = 'io.github.thatrobin.docky'
 archivesBaseName = 'Docky'
 description = 'A plugin to generate documentation for apoli addons'
 
-String vendor = 'Docky'
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_18
+targetCompatibility = JavaVersion.VERSION_18
 
 repositories {
+    maven {
+        name = "JitPack"
+        url = "https://jitpack.io"
+    }
+    maven {
+        url "https://maven.shedaniel.me/"
+    }
+    maven {
+        url "https://maven.terraformersmc.com/"
+    }
+    maven {
+        name = "Ladysnake Mods"
+        url = 'https://ladysnake.jfrog.io/artifactory/mods'
+    }
+    maven {
+        url = 'https://maven.cafeteria.dev'
+        content {
+            includeGroup 'net.adriantodt.fabricmc'
+        }
+    }
+    maven {
+        url "https://maven.jamieswhiteshirt.com/libs-release"
+        content {
+            includeGroup "com.jamieswhiteshirt"
+        }
+    }
     mavenCentral()
+}
+
+loom {
+    runs {
+        CreateDocs {
+            inherit client
+            name "Create Docs"
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
+            vmArg "-Dfabric-api.datagen.modid=docky"
+
+            runDir "build/docky"
+        }
+    }
 }
 
 dependencies {
     compileOnly gradleApi()
 
-    implementation group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.14'
-    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.14'
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.10'
+    minecraft "com.mojang:minecraft:1.19.3"
+    mappings "net.fabricmc:yarn:1.19.2+build.9:v2"
 
+    modImplementation "net.fabricmc:fabric-loader:0.14.9"
+
+    modImplementation "com.github.thatrobin:apoli:b98fcdab45"
+
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.0.1"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.0.1"
+
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.60.0+1.19.2"
     compileOnly group: 'org.jetbrains', name: 'annotations', version: '+'
 }
+
+
 
 gradlePlugin {
     plugins {
