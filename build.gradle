@@ -58,17 +58,16 @@ loom {
 dependencies {
     compileOnly gradleApi()
 
-    minecraft "com.mojang:minecraft:1.19.3"
-    mappings "net.fabricmc:yarn:1.19.2+build.9:v2"
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    modImplementation "net.fabricmc:fabric-loader:0.14.9"
+    modImplementation "com.github.apace100:apoli:${project.apoli_version}"
 
-    modImplementation "com.github.thatrobin:apoli:b98fcdab45"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}"
 
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.0.1"
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.0.1"
-
-    modImplementation "net.fabricmc.fabric-api:fabric-api:0.60.0+1.19.2"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     compileOnly group: 'org.jetbrains', name: 'annotations', version: '+'
 }
 

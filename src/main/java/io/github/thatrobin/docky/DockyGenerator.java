@@ -7,10 +7,7 @@ import com.google.gson.JsonParser;
 import io.github.apace100.apoli.power.factory.Factory;
 import io.github.apace100.calio.data.SerializableData;
 import io.github.apace100.calio.data.SerializableDataType;
-import io.github.thatrobin.docky.utils.SectionBuilder;
-import io.github.thatrobin.docky.utils.SectionTitleManager;
-import io.github.thatrobin.docky.utils.SerializableDataExt;
-import io.github.thatrobin.docky.utils.SerializableDataTypesRegistry;
+import io.github.thatrobin.docky.utils.*;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
@@ -27,7 +24,10 @@ import java.util.stream.Stream;
 
 public interface DockyGenerator extends DataGeneratorEntrypoint {
 
-    static void generate(String modName, String outputPath) {
+    static void generate(DocumentationBuilder builder) {
+        String outputPath = builder.getOutputPath();
+        Optional<MkdocsBuilder> mkdocsBuilder = builder.getMkDocsBuilder();
+
         generateReadthedocsyaml(outputPath);
         generateRequirements(outputPath);
 
@@ -37,14 +37,23 @@ public interface DockyGenerator extends DataGeneratorEntrypoint {
 
         generateContentsPages(outputPath);
 
-        generateMkdocsyml(modName, outputPath);
+        if(mkdocsBuilder.isPresent()) {
+            generateMkdocsyml(outputPath, mkdocsBuilder.get());
+        } else {
+            autoGenerateMkdocsyml(outputPath);
+        }
     }
 
-    static void generateMkdocsyml(String modName, String outputPath) {
+    static void generateMkdocsyml(String outputPath, MkdocsBuilder mkdocsBuilder) {
+        try (PrintWriter out = new PrintWriter(outputPath + "\\" + "mkdocs.yml")) {
+            out.println(mkdocsBuilder.build());
+        } catch (FileNotFoundException e) {
+            Docky.LOGGER.error("Unable to create file: " + Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    static void autoGenerateMkdocsyml(String outputPath) {
         StringBuilder builder = new StringBuilder();
-        builder.append("site_name: ")
-            .append(modName)
-            .append("\n\nnav:\n  - Home: index.md\n");
 
         for (Map.Entry<String, List<String>> entry : SectionTitleManager.entries()) {
             SectionBuilder sectionBuilder = new SectionBuilder(entry.getKey());
@@ -58,13 +67,8 @@ public interface DockyGenerator extends DataGeneratorEntrypoint {
             builder.append(sectionBuilder.build());
         }
 
-        builder.append("\ntheme:\n    name: material\n    palette:\n        - media: \"(prefers-color-scheme: dark)\"\n          scheme: slate\n          primary: deep purple\n          toggle:\n            icon: material/toggle-switch-off-outline\n            name: Switch to light mode\n        - media: \"(prefers-color-scheme: light)\"\n          scheme: default\n          primary: deep purple\n          toggle:\n            icon: material/toggle-switch\n            name: Switch to dark mode\n\n")
-            .append("separator: '_'\nplugins:\n    - search\n    - mermaid2:\n        version: 8.6.4\n        arguments:\n            theme: 'neutral'\n\n")
-            .append("markdown_extensions:\n    - admonition\n")
-            .append("extra_javascript:\n    - https://unpkg.com/mermaid@8.7.0/dist/mermaid.min.js");
-
         try (PrintWriter out = new PrintWriter(outputPath + "\\" + "mkdocs.yml")) {
-            out.println(builder);
+            out.println(builder.toString());
         } catch (FileNotFoundException e) {
             Docky.LOGGER.error("Unable to create file: " + Arrays.toString(e.getStackTrace()));
         }
@@ -135,7 +139,7 @@ public interface DockyGenerator extends DataGeneratorEntrypoint {
 
     static void generateEntryPage(DockyEntry entry, String outputPath) {
         Factory factory = entry.getFactory();
-        String prefix = entry.getPrefix();
+        String prefix = entry.getSerializableData().getLabel();
         String description = entry.getDescription();
         String path = entry.getExamplePath();
 
