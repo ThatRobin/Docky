@@ -1,7 +1,6 @@
 package io.github.thatrobin.docky.utils;
 
 import io.github.thatrobin.docky.DockyGenerator;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
 import java.nio.file.Path;
 import java.util.Optional;

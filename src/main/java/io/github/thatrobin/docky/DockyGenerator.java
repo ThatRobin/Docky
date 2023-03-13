@@ -14,6 +14,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
+import net.minecraft.util.Util;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.*;
@@ -22,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -52,11 +54,7 @@ public interface DockyGenerator extends DataGeneratorEntrypoint {
     }
 
     static void generateMkdocsyml(String outputPath, MkdocsBuilder mkdocsBuilder) {
-        try (PrintWriter out = new PrintWriter(outputPath + "\\" + "mkdocs.yml")) {
-            out.println(mkdocsBuilder.build());
-        } catch (FileNotFoundException e) {
-            Docky.LOGGER.error("Unable to create file: " + Arrays.toString(e.getStackTrace()));
-        }
+        writeToPath(outputPath + "\\mkdocs.yml", mkdocsBuilder.build());
     }
 
     static void autoGenerateMkdocsyml(String outputPath) {
@@ -74,11 +72,7 @@ public interface DockyGenerator extends DataGeneratorEntrypoint {
             builder.append(sectionBuilder.build());
         }
 
-        try (PrintWriter out = new PrintWriter(outputPath + "\\" + "mkdocs.yml")) {
-            out.println(builder.toString());
-        } catch (FileNotFoundException e) {
-            Docky.LOGGER.error("Unable to create file: " + Arrays.toString(e.getStackTrace()));
-        }
+        writeToPath(outputPath + "\\" + "mkdocs.yml", builder.toString());
     }
 
     static void generateContentsPages(String outputPath) {
@@ -101,11 +95,7 @@ public interface DockyGenerator extends DataGeneratorEntrypoint {
                             .append(path2.getFileName().toString())
                             .append(")");
                     }
-                    try (PrintWriter out = new PrintWriter(outputPath + "\\docs\\types\\" + path.getFileName() + ".md")) {
-                        out.println(builder);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    writeToPath(outputPath + "\\docs\\types\\" + path.getFileName() + ".md", builder.toString());
                 }
             }
         } catch (IOException ex) {
@@ -114,14 +104,8 @@ public interface DockyGenerator extends DataGeneratorEntrypoint {
     }
 
     static void generateRequirements(String outputPath) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("mkdocs-mermaid2-plugin\nmkdocs-material\nsphinx-markdown-tables");
+        writeToPath(outputPath + "\\" + "requirements.txt", "mkdocs-mermaid2-plugin\nmkdocs-material\nsphinx-markdown-tables");
 
-        try (PrintWriter out = new PrintWriter(outputPath + "\\" + "requirements.txt")) {
-            out.println(builder);
-        } catch (FileNotFoundException e) {
-            Docky.LOGGER.error("Unable to create file: " + Arrays.toString(e.getStackTrace()));
-        }
     }
 
     static void generateReadthedocsyaml(String outputPath) {
@@ -133,15 +117,7 @@ public interface DockyGenerator extends DataGeneratorEntrypoint {
             .append("install:\n    ")
             .append("- requirements: requirements.txt");
 
-        try (PrintWriter out = new PrintWriter(outputPath + "\\" + ".readthedocs.yaml")) {
-            out.println(builder);
-        } catch (FileNotFoundException e) {
-            Docky.LOGGER.error("Unable to create file: " + Arrays.toString(e.getStackTrace()));
-        }
-    }
-
-    static void generateDataTypePages(String outputPath) {
-
+        writeToPath(outputPath + "\\" + ".readthedocs.yaml", builder.toString());
     }
 
     static void generateEntryPage(DockyEntry entry, String outputPath) {
@@ -252,10 +228,19 @@ public interface DockyGenerator extends DataGeneratorEntrypoint {
             File f1 = new File(outputPath + "\\" + prefix + "_types");
             boolean result = f1.mkdirs();
         }
-        try (PrintWriter out = new PrintWriter(outputPath + "\\" + prefix + "_types" +  "\\" + id.getPath() + ".md")) {
-            out.println(builder);
-        } catch (FileNotFoundException e) {
-            Docky.LOGGER.error("Unable to create file: " + Arrays.toString(e.getStackTrace()));
-        }
+        writeToPath(outputPath + "\\" + prefix + "_types" +  "\\" + id.getPath() + ".md", builder.toString());
+    }
+
+    static void writeToPath(String outputPath, String contents) {
+        CompletableFuture.runAsync(() -> {
+            try {
+                Files.deleteIfExists(new File(outputPath).toPath());
+                FileWriter myWriter = new FileWriter(outputPath);
+                myWriter.write(contents);
+                myWriter.close();
+            } catch (IOException iOException) {
+                Docky.LOGGER.error("Failed to save file to {}", outputPath, iOException);
+            }
+        }, Util.getMainWorkerExecutor());
     }
 }
