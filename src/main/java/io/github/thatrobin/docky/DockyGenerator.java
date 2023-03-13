@@ -10,6 +10,7 @@ import io.github.apace100.calio.data.SerializableDataType;
 import io.github.thatrobin.docky.mixin.DataGeneratorAccessor;
 import io.github.thatrobin.docky.utils.*;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
@@ -30,8 +31,8 @@ public interface DockyGenerator extends DataGeneratorEntrypoint {
         return ((DataGeneratorAccessor)dataGenerator).getOutputPath();
     }
 
-    static void generate(DocumentationBuilder builder) {
-        String outputPath = builder.getOutputPath();
+    static void generate(DocumentationBuilder builder, Path path) {
+        String outputPath = path.toString();
         Optional<MkdocsBuilder> mkdocsBuilder = builder.getMkDocsBuilder();
 
         generateReadthedocsyaml(outputPath);
