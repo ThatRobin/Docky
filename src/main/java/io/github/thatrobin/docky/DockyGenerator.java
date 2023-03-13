@@ -7,8 +7,10 @@ import com.google.gson.JsonParser;
 import io.github.apace100.apoli.power.factory.Factory;
 import io.github.apace100.calio.data.SerializableData;
 import io.github.apace100.calio.data.SerializableDataType;
+import io.github.thatrobin.docky.mixin.DataGeneratorAccessor;
 import io.github.thatrobin.docky.utils.*;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import org.apache.commons.lang3.text.WordUtils;
@@ -23,6 +25,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public interface DockyGenerator extends DataGeneratorEntrypoint {
+
+    static Path getOutputPath(DataGenerator dataGenerator) {
+        return ((DataGeneratorAccessor)dataGenerator).getOutputPath();
+    }
 
     static void generate(DocumentationBuilder builder) {
         String outputPath = builder.getOutputPath();

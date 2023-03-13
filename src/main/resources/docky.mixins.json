@@ -4,10 +4,12 @@
     "package": "io.github.thatrobin.docky.mixin",
     "compatibilityLevel": "JAVA_17",
     "mixins": [
+        "DataGeneratorAccessor",
+        "FabricDataGeneratorAccessor"
     ],
     "client": [
     ],
     "injectors": {
         "defaultRequire": 1
-    }
+  }
 }

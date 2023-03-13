@@ -1,8 +1,6 @@
 package io.github.thatrobin.docky;
 
 import io.github.apace100.apoli.power.factory.Factory;
-import io.github.apace100.apoli.power.factory.PowerFactory;
-import io.github.apace100.apoli.power.factory.action.ActionFactory;
 import io.github.thatrobin.docky.utils.SerializableDataExt;
 
 public class DockyEntry {
