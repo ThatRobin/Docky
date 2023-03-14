@@ -18,7 +18,7 @@ public class DockyRegistry {
         }
         entryList.add(entry);
         if(entry.getHeader() != null && entry.getHeader().isEmpty()) {
-            SectionTitleManager.put(entry.getHeader(), entry.getPath());
+            SectionTitleManager.put(entry.getHeader(), entry.getType());
         }
         return entry;
     }

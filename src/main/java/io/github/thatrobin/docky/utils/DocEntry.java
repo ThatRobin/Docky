@@ -1,8 +1,5 @@
 package io.github.thatrobin.docky.utils;
 
-import com.mojang.datafixers.util.Pair;
-import kotlin.TypeCastException;
-
 import java.util.List;
 
 public class DocEntry {

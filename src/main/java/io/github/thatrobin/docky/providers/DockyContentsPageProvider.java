@@ -1,22 +1,24 @@
 package io.github.thatrobin.docky.providers;
 
+import io.github.thatrobin.docky.DockyEntry;
 import io.github.thatrobin.docky.DockyGenerator;
-import io.github.thatrobin.docky.utils.SectionTitleManager;
+import io.github.thatrobin.docky.DockyRegistry;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class DockyContentsPageProvider implements DataProvider {
 
     public final FabricDataOutput dataOutput;
+    private final String label;
 
-    public DockyContentsPageProvider(FabricDataOutput dataOutput) {
+    public DockyContentsPageProvider(FabricDataOutput dataOutput, String label) {
         this.dataOutput = dataOutput;
+        this.label = label;
     }
 
     @Override
@@ -24,10 +26,26 @@ public class DockyContentsPageProvider implements DataProvider {
         return DockyGenerator.writeToPath(writer, generateContentsPages(), getFilePath());
     }
 
-    static String generateContentsPages() {
+    String generateContentsPages() {
         StringBuilder builder = new StringBuilder();
-        for (Map.Entry<String, List<String>> entry : SectionTitleManager.entries()) {
-            builder.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+        builder.append("# ")
+            .append(WordUtils.capitalize(this.label.replaceAll("_", " ")))
+            .append("\n\n\n")
+            .append("### List\n");
+
+        for (DockyEntry dockyEntry : DockyRegistry.entryList) {
+            String name = dockyEntry.getFactory().getSerializerId().getPath();
+            String subfolder = dockyEntry.getType();
+
+            if(this.label.equals(subfolder)) {
+                builder.append("\n * [")
+                    .append(WordUtils.capitalize(name.replace(".md", "").replaceAll("_", " ")))
+                    .append("](")
+                    .append(subfolder)
+                    .append("/")
+                    .append(name)
+                    .append(".md)");
+            }
         }
         return builder.toString();
     }
@@ -35,11 +53,12 @@ public class DockyContentsPageProvider implements DataProvider {
     private Path getFilePath() {
         return dataOutput
             .getPath().resolve("wiki")
-            .resolve("requirements.txt");
+            .resolve("docs")
+            .resolve(this.label + ".md");
     }
 
     @Override
     public String getName() {
-        return "Requirements generator";
+        return this.label;
     }
 }

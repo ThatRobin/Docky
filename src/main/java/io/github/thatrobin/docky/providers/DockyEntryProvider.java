@@ -6,28 +6,20 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.apace100.calio.data.SerializableData;
 import io.github.apace100.calio.data.SerializableDataType;
-import io.github.thatrobin.docky.Docky;
 import io.github.thatrobin.docky.DockyEntry;
 import io.github.thatrobin.docky.DockyGenerator;
-import io.github.thatrobin.docky.DockyRegistry;
 import io.github.thatrobin.docky.utils.SerializableDataExt;
 import io.github.thatrobin.docky.utils.SerializableDataTypesRegistry;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import org.apache.commons.lang3.text.WordUtils;
 
-import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.Field;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
@@ -48,7 +40,7 @@ public class DockyEntryProvider implements DataProvider {
 
     static String generateEntryPage(DockyEntry entry) {
         io.github.apace100.apoli.power.factory.Factory factory = entry.getFactory();
-        String prefix = entry.getPath();
+        String prefix = entry.getType();
         String description = entry.getDescription();
         String path = entry.getExamplePath();
 
@@ -150,12 +142,12 @@ public class DockyEntryProvider implements DataProvider {
         return dataOutput
             .getPath().resolve("wiki")
             .resolve("docs/types")
-            .resolve(this.dockyEntry.getHeader())
+            .resolve(this.dockyEntry.getType())
             .resolve(id.getPath() + ".md");
     }
 
     @Override
     public String getName() {
-        return this.dockyEntry.getPath() + ": " + this.dockyEntry.getFactory().getSerializerId().toString();
+        return this.dockyEntry.getType() + ": " + this.dockyEntry.getFactory().getSerializerId().toString();
     }
 }

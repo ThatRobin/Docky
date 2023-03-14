@@ -2,12 +2,13 @@ package io.github.thatrobin.docky;
 
 import io.github.apace100.apoli.power.factory.Factory;
 import io.github.thatrobin.docky.utils.SerializableDataExt;
+import io.github.thatrobin.docky.utils.TypeManager;
 
 public class DockyEntry {
 
     private Factory factory;
     private String header;
-    private String path;
+    private String type;
     private String description;
     private String examplePath;
 
@@ -29,13 +30,14 @@ public class DockyEntry {
         return this.header;
     }
 
-    public DockyEntry setPath(String path) {
-        this.path = path;
+    public DockyEntry setType(String path) {
+        this.type = path;
+        TypeManager.addType(this.type);
         return this;
     }
 
-    public String getPath() {
-        return this.path;
+    public String getType() {
+        return this.type;
     }
 
     public DockyEntry setDescription(String description) {

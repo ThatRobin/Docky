@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 
 import static io.github.thatrobin.docky.utils.MkdocsBuilder.createPage;
 import static io.github.thatrobin.docky.utils.MkdocsBuilder.createSection;
-import static io.github.thatrobin.docky.utils.MkdocsBuilder.init;
 
 public class Docky {
 
