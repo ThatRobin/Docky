@@ -9,10 +9,8 @@ import java.util.function.Function;
 public class SerializableDataExt extends SerializableData {
 
     private final LinkedHashMap<String, String> descFields = new LinkedHashMap<>();
-    private final String label;
 
-    public SerializableDataExt(String label) {
-        this.label = label;
+    public SerializableDataExt() {
     }
 
 
@@ -38,7 +36,4 @@ public class SerializableDataExt extends SerializableData {
         return descFields.get(name);
     }
 
-    public String getLabel() {
-        return label;
-    }
 }

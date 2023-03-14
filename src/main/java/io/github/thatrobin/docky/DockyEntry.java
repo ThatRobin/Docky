@@ -7,6 +7,7 @@ public class DockyEntry {
 
     private Factory factory;
     private String header;
+    private String path;
     private String description;
     private String examplePath;
 
@@ -26,6 +27,15 @@ public class DockyEntry {
 
     public String getHeader() {
         return this.header;
+    }
+
+    public DockyEntry setPath(String path) {
+        this.path = path;
+        return this;
+    }
+
+    public String getPath() {
+        return this.path;
     }
 
     public DockyEntry setDescription(String description) {
