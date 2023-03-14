@@ -10,6 +10,9 @@
     "icon": "assets/docky/icon.png",
     "environment": "*",
     "entrypoints": {
+        "main": [
+            "io.github.thatrobin.docky.Docky"
+        ]
     },
     "mixins": [
         "docky.mixins.json"
