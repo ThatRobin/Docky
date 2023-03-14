@@ -35,7 +35,7 @@ public class DockyPageProvider implements DataProvider {
     private Path getFilePath() {
         Path path = dataOutput.getPath().resolve("wiki");
         if(this.path != null) {
-            path = path.resolve(path);
+            path = path.resolve(this.path);
         }
         return path.resolve(name + ".md");
     }
