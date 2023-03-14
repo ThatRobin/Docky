@@ -11,6 +11,7 @@ import io.github.thatrobin.docky.DockyEntry;
 import io.github.thatrobin.docky.DockyGenerator;
 import io.github.thatrobin.docky.DockyRegistry;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
@@ -33,9 +34,9 @@ public class DockyEntryProvider implements DataProvider {
     public final FabricDataOutput dataOutput;
     public final DockyEntry dockyEntry;
 
-    public DockyEntryProvider(FabricDataOutput dataOutput, DockyEntry dockyEntry) {
+    public DockyEntryProvider(FabricDataOutput dataOutput) {
         this.dataOutput = dataOutput;
-        this.dockyEntry = dockyEntry;
+        this.dockyEntry = DockyRegistry.entryList.get(0);
     }
 
     @Override
