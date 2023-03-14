@@ -141,7 +141,7 @@ public class DockyEntryProvider implements DataProvider {
         Identifier id = this.dockyEntry.getFactory().getSerializerId();
         return dataOutput
             .getPath().resolve("wiki")
-            .resolve("docs/types")
+            .resolve("docs")
             .resolve(this.dockyEntry.getType())
             .resolve(id.getPath() + ".md");
     }
