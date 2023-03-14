@@ -10,7 +10,6 @@ import io.github.apace100.calio.data.SerializableDataType;
 import io.github.thatrobin.docky.mixin.DataGeneratorAccessor;
 import io.github.thatrobin.docky.utils.*;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
@@ -104,20 +103,19 @@ public interface DockyGenerator extends DataGeneratorEntrypoint {
     }
 
     static void generateRequirements(String outputPath) {
-        writeToPath(outputPath + "\\" + "requirements.txt", "mkdocs-mermaid2-plugin\nmkdocs-material\nsphinx-markdown-tables");
+        writeToPath(outputPath + "\\requirements.txt", "mkdocs-mermaid2-plugin\nmkdocs-material\nsphinx-markdown-tables");
 
     }
 
     static void generateReadthedocsyaml(String outputPath) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("version: 2\n\n")
-            .append("mkdocs:\n  ")
-            .append("configuration: mkdocs.yml\n")
-            .append("python:\n  ")
-            .append("install:\n    ")
-            .append("- requirements: requirements.txt");
+        String builder = "version: 2\n\n" +
+            "mkdocs:\n  " +
+            "configuration: mkdocs.yml\n" +
+            "python:\n  " +
+            "install:\n    " +
+            "- requirements: requirements.txt";
 
-        writeToPath(outputPath + "\\" + ".readthedocs.yaml", builder.toString());
+        writeToPath(outputPath + "\\.readthedocs.yaml", builder);
     }
 
     static void generateEntryPage(DockyEntry entry, String outputPath) {
@@ -216,12 +214,10 @@ public interface DockyGenerator extends DataGeneratorEntrypoint {
                 e.printStackTrace();
             }
         }
-        if(Files.exists(Paths.get(outputPath + "\\" + id.getPath() + ".md"))) {
-            try {
-                Files.delete(Paths.get(outputPath + "\\" + id.getPath() + ".md"));
-            } catch (IOException e) {
-                Docky.LOGGER.error(e.getMessage());
-            }
+        try {
+            Files.deleteIfExists(Paths.get(outputPath + "\\" + id.getPath() + ".md"));
+        } catch (IOException e) {
+            Docky.LOGGER.error(e.getMessage());
         }
 
         if(!Files.exists(Paths.get(outputPath + "\\" + prefix + "_types"))) {
@@ -231,8 +227,8 @@ public interface DockyGenerator extends DataGeneratorEntrypoint {
         writeToPath(outputPath + "\\" + prefix + "_types" +  "\\" + id.getPath() + ".md", builder.toString());
     }
 
-    static void writeToPath(String outputPath, String contents) {
-        CompletableFuture.runAsync(() -> {
+    static CompletableFuture<?> writeToPath(String outputPath, String contents) {
+        return CompletableFuture.runAsync(() -> {
             try {
                 Files.deleteIfExists(new File(outputPath).toPath());
                 FileWriter myWriter = new FileWriter(outputPath);
