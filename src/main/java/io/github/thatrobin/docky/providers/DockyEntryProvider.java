@@ -94,7 +94,7 @@ public class DockyEntryProvider implements DataProvider {
                                     builder.append("[Array](../data_types/array.md) of [")
                                         .append(StringUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                         .append("](../data_types/")
-                                        .append(field1.getName().toLowerCase(Locale.ROOT))
+                                        .append(field1.getName().toLowerCase(Locale.ROOT).replaceAll("([s])(?!\\S)", ""))
                                         .append(".md)");
                                 }
                             }
