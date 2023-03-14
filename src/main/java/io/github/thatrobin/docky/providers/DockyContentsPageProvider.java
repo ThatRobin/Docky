@@ -53,7 +53,7 @@ public class DockyContentsPageProvider implements DataProvider {
     private Path getFilePath() {
         return dataOutput
             .getPath().resolve("wiki")
-            .resolve("docs")
+            .resolve("docs/types")
             .resolve(this.label + ".md");
     }
 
