@@ -29,10 +29,11 @@ import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 public class DockyEntryProvider implements DataProvider {
-    protected final FabricDataOutput dataOutput;
-    protected final DockyEntry dockyEntry;
 
-    protected DockyEntryProvider(FabricDataOutput dataOutput, DockyEntry dockyEntry) {
+    public final FabricDataOutput dataOutput;
+    public final DockyEntry dockyEntry;
+
+    public DockyEntryProvider(FabricDataOutput dataOutput, DockyEntry dockyEntry) {
         this.dataOutput = dataOutput;
         this.dockyEntry = dockyEntry;
     }
