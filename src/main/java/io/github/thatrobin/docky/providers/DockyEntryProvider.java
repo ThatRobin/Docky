@@ -15,7 +15,7 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
-import org.apache.commons.lang3.text.WordUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.FileReader;
 import java.lang.reflect.Field;
@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
+@SuppressWarnings("unused")
 public class DockyEntryProvider implements DataProvider {
 
     public final FabricDataOutput dataOutput;
@@ -49,9 +50,9 @@ public class DockyEntryProvider implements DataProvider {
 
         StringBuilder builder = new StringBuilder();
         builder.append("# ")
-            .append(WordUtils.capitalize(id.getPath().replaceAll("_", " ")))
+            .append(StringUtils.capitalize(id.getPath().replaceAll("_", " ")))
             .append("\n[")
-            .append(WordUtils.capitalize(prefix.replaceAll("_", " ")))
+            .append(StringUtils.capitalize(prefix.replaceAll("_", " ")))
             .append(" Type](../")
             .append(prefix)
             .append("_types.md)\n");
@@ -80,7 +81,7 @@ public class DockyEntryProvider implements DataProvider {
                             SerializableDataType<?> type2 = (SerializableDataType<?>) obj;
                             if (type2.equals(type)) {
                                 builder.append("[")
-                                    .append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
+                                    .append(StringUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                     .append("](../data_types/")
                                     .append(field1.getName().toLowerCase(Locale.ROOT))
                                     .append(".md)");
@@ -115,9 +116,8 @@ public class DockyEntryProvider implements DataProvider {
                 builder.append("\n### Example\n```json\n");
 
                 String exampleDescription = "";
-                JsonParser parser = new JsonParser();
                 try {
-                    Object obj = parser.parse(new FileReader(path));
+                    Object obj = JsonParser.parseReader(new FileReader(path));
                     Gson gson = new GsonBuilder().setPrettyPrinting().create();
                     JsonObject jsonObject = (JsonObject)obj;
                     if(jsonObject.has("example_description")) {

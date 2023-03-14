@@ -2,10 +2,11 @@ package io.github.thatrobin.docky.utils;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class DocEntry {
 
     public Object data;
-    private String title;
+    private final String title;
 
     public DocEntry(String title, String path) {
         this.title = title;
@@ -28,6 +29,7 @@ public class DocEntry {
         throw new RuntimeException("Could not cast data to String.");
     }
 
+    @SuppressWarnings("unchecked")
     public List<DocEntry> getEntries() {
         if(this.data instanceof List) {
             return (List<DocEntry>)this.data;

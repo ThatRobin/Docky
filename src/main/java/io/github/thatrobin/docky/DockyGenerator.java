@@ -15,7 +15,7 @@ public interface DockyGenerator extends DataGeneratorEntrypoint {
     static CompletableFuture<?> writeToPath(DataWriter writer, String json, Path path) {
         return CompletableFuture.runAsync(() -> {
             try {
-                writer.write(path, json.getBytes(StandardCharsets.UTF_8), Hashing.sha1().hashString(json, StandardCharsets.UTF_8));
+                writer.write(path, json.getBytes(StandardCharsets.UTF_8), Hashing.sha256().hashString(json, StandardCharsets.UTF_8));
             }
             catch (IOException iOException) {
                 Docky.LOGGER.error("Failed to save file to {}", path, iOException);

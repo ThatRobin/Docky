@@ -4,6 +4,8 @@ import io.github.apace100.apoli.power.factory.Factory;
 import io.github.thatrobin.docky.utils.SerializableDataExt;
 import io.github.thatrobin.docky.utils.TypeManager;
 
+
+@SuppressWarnings("unused")
 public class DockyEntry {
 
     private Factory factory;

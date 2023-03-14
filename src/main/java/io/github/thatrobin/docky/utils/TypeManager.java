@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("unused")
 public class TypeManager {
 
     private static final Set<String> types = new HashSet<>();

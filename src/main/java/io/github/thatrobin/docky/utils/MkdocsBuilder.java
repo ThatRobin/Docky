@@ -4,9 +4,10 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class MkdocsBuilder {
 
-    private List<String> contents = new LinkedList<>();
+    private final List<String> contents = new LinkedList<>();
     private int indentationLevel = 0;
 
     public static MkdocsBuilder init() {
@@ -47,6 +48,7 @@ public class MkdocsBuilder {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void addGroup(DocEntry entry) {
         this.contents.add("\n");
         indent();

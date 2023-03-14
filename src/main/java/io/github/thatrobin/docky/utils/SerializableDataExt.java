@@ -6,6 +6,7 @@ import io.github.apace100.calio.data.SerializableDataType;
 import java.util.LinkedHashMap;
 import java.util.function.Function;
 
+@SuppressWarnings("unused")
 public class SerializableDataExt extends SerializableData {
 
     private final LinkedHashMap<String, String> descFields = new LinkedHashMap<>();

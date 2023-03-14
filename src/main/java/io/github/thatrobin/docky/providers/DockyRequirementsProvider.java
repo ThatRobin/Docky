@@ -8,6 +8,7 @@ import net.minecraft.data.DataWriter;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 
+@SuppressWarnings("unused")
 public class DockyRequirementsProvider implements DataProvider {
 
     public final FabricDataOutput dataOutput;
