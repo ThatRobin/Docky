@@ -1,13 +1,12 @@
 package io.github.thatrobin.docky.utils;
 
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 @SuppressWarnings("unused")
 public class MkdocsBuilder {
 
-    private final List<String> contents = new LinkedList<>();
+    private final StringBuilder contents = new StringBuilder();
     private int indentationLevel = 0;
 
     public static MkdocsBuilder init() {
@@ -15,20 +14,16 @@ public class MkdocsBuilder {
     }
 
     public MkdocsBuilder setName(String name) {
-        this.contents.add("site_name: " + name + "\n");
+        this.contents.append("site_name: ").append(name).append("\n");
         return this;
     }
 
     public String build() {
-        StringBuilder builder = new StringBuilder();
-        for (String content : this.contents) {
-            builder.append(content);
-        }
-        return builder.toString();
+        return contents.toString();
     }
 
     public MkdocsBuilder navigation(DocEntry... entries) {
-        this.contents.add("\nnav:");
+        this.contents.append("\nnav:");
         this.indentationLevel++;
         for (DocEntry entry : entries) {
             if (entry.getDataType().equals(DocEntry.DataType.GROUP)) {
@@ -38,21 +33,21 @@ public class MkdocsBuilder {
                 addString(entry);
             }
         }
-        this.contents.add("\n");
+        this.contents.append("\n");
         return this;
     }
 
     public void indent() {
         for (int i = 0; i < indentationLevel; i++) {
-            this.contents.add("  ");
+            this.contents.append("  ");
         }
     }
 
     @SuppressWarnings("unchecked")
     public void addGroup(DocEntry entry) {
-        this.contents.add("\n");
+        this.contents.append("\n");
         indent();
-        this.contents.add("- " + entry.getTitle() + ":");
+        this.contents.append("- ").append(entry.getTitle()).append(":");
         this.indentationLevel++;
         List<DocEntry> entries = (List<DocEntry>) entry.data;
         for (DocEntry docEntry : entries) {
@@ -67,9 +62,9 @@ public class MkdocsBuilder {
     }
 
     public void addString(DocEntry entry) {
-        this.contents.add("\n");
+        this.contents.append("\n");
         indent();
-        this.contents.add("- " + entry.getTitle() + ": " + entry.getString());
+        this.contents.append("- ").append(entry.getTitle()).append(": ").append(entry.getString());
     }
 
     public static DocEntry createSection(String title, DocEntry... entries) {
@@ -86,7 +81,7 @@ public class MkdocsBuilder {
             "markdown_extensions:\n    - admonition\n" +
             "extra_javascript:\n    - https://unpkg.com/mermaid@8.7.0/dist/mermaid.min.js";
 
-        this.contents.add(themeBuilder);
+        this.contents.append(themeBuilder);
         return this;
     }
 }
