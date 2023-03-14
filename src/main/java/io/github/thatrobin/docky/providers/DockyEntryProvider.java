@@ -8,6 +8,7 @@ import io.github.apace100.calio.data.SerializableData;
 import io.github.apace100.calio.data.SerializableDataType;
 import io.github.thatrobin.docky.DockyEntry;
 import io.github.thatrobin.docky.DockyGenerator;
+import io.github.thatrobin.docky.mixin.SerializableDataTypeAccessor;
 import io.github.thatrobin.docky.utils.SerializableDataExt;
 import io.github.thatrobin.docky.utils.SerializableDataTypesRegistry;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -20,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.FileReader;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
@@ -79,12 +81,22 @@ public class DockyEntryProvider implements DataProvider {
                         try {
                             Object obj = field1.get(null);
                             SerializableDataType<?> type2 = (SerializableDataType<?>) obj;
-                            if (type2.equals(type)) {
-                                builder.append("[")
-                                    .append(StringUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
-                                    .append("](../data_types/")
-                                    .append(field1.getName().toLowerCase(Locale.ROOT))
-                                    .append(".md)");
+                            if(!((SerializableDataTypeAccessor)type2).getDataClass().isAssignableFrom(List.class)) {
+                                if (type2.equals(type)) {
+                                    builder.append("[")
+                                        .append(StringUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
+                                        .append("](../data_types/")
+                                        .append(field1.getName().toLowerCase(Locale.ROOT))
+                                        .append(".md)");
+                                }
+                            } else {
+                                if (type2.equals(type)) {
+                                    builder.append("[Array](../data_types/array.md) of [")
+                                        .append(StringUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
+                                        .append("](../data_types/")
+                                        .append(field1.getName().toLowerCase(Locale.ROOT))
+                                        .append(".md)");
+                                }
                             }
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
