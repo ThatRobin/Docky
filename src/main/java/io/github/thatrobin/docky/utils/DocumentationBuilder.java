@@ -1,7 +1,5 @@
 package io.github.thatrobin.docky.utils;
 
-import io.github.thatrobin.docky.DockyGenerator;
-
 import java.nio.file.Path;
 import java.util.Optional;
 
