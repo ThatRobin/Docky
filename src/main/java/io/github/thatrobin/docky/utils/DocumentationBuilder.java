@@ -22,7 +22,7 @@ public class DocumentationBuilder {
     }
 
     public void build(Path path) {
-        DockyGenerator.generate(this, path);
+        //DockyGenerator.generate(this, path);
     }
 
 }
