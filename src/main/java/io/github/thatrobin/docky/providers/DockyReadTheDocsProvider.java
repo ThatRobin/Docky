@@ -12,6 +12,10 @@ public class DockyReadTheDocsProvider extends DockyDataProvider {
 
     public final FabricDataOutput dataOutput;
 
+    public DockyReadTheDocsProvider(FabricDataOutput dataOutput) {
+        this(dataOutput, null);
+    }
+
     public DockyReadTheDocsProvider(FabricDataOutput dataOutput, Path baseOutputPath) {
         super(dataOutput, baseOutputPath);
         this.dataOutput = dataOutput;

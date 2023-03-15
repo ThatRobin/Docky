@@ -12,6 +12,10 @@ public class DockyRequirementsProvider extends DockyDataProvider {
 
     public final FabricDataOutput dataOutput;
 
+    public DockyRequirementsProvider(FabricDataOutput dataOutput) {
+        this(dataOutput, null);
+    }
+
     public DockyRequirementsProvider(FabricDataOutput dataOutput, Path baseOutputPath) {
         super(dataOutput, baseOutputPath);
         this.dataOutput = dataOutput;
