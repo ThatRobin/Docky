@@ -72,6 +72,7 @@ public class PageBuilder {
 
     public PageBuilder addTable(TableBuilder builder) {
         this.contents.append(builder.build());
+        newLine();
         return this;
     }
 
@@ -82,7 +83,7 @@ public class PageBuilder {
     }
 
     public PageBuilder addJson(String path) {
-        this.contents.append("```json");
+        this.contents.append("```json\n");
         String exampleDescription = "";
         try {
             JsonObject jsonObject = (JsonObject)JsonParser.parseReader(new FileReader(path));
@@ -97,11 +98,12 @@ public class PageBuilder {
         }
         this.contents.append("```")
             .append(exampleDescription);
+        newLine();
         return this;
     }
 
     public PageBuilder addJson(String path, boolean newLine) {
-        this.contents.append("```json");
+        this.contents.append("```json\n");
         String exampleDescription = "";
         try {
             JsonObject jsonObject = (JsonObject)JsonParser.parseReader(new FileReader(path));
@@ -143,6 +145,11 @@ public class PageBuilder {
                     content.append("\n");
                 }
             }
+            return this;
+        }
+
+        public TableBuilder addBreak() {
+            content.append("---|---|---|---");
             return this;
         }
 
