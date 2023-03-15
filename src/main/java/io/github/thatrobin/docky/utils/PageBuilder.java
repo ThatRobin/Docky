@@ -1,5 +1,14 @@
 package io.github.thatrobin.docky.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import net.minecraft.util.JsonHelper;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 @SuppressWarnings("unused")
 public class PageBuilder {
 
@@ -72,6 +81,45 @@ public class PageBuilder {
         return this;
     }
 
+    public PageBuilder addJson(String path) {
+        this.contents.append("```json");
+        String exampleDescription = "";
+        try {
+            JsonObject jsonObject = (JsonObject)JsonParser.parseReader(new FileReader(path));
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            if(jsonObject.has("example_description")) {
+                exampleDescription = JsonHelper.getString(jsonObject, "example_description");
+                jsonObject.remove("example_description");
+            }
+            this.contents.append(gson.toJson(jsonObject).replaceAll("\t", "   "));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        this.contents.append("```")
+            .append(exampleDescription);
+        return this;
+    }
+
+    public PageBuilder addJson(String path, boolean newLine) {
+        this.contents.append("```json");
+        String exampleDescription = "";
+        try {
+            JsonObject jsonObject = (JsonObject)JsonParser.parseReader(new FileReader(path));
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            if(jsonObject.has("example_description")) {
+                exampleDescription = JsonHelper.getString(jsonObject, "example_description");
+                jsonObject.remove("example_description");
+            }
+            this.contents.append(gson.toJson(jsonObject).replaceAll("\t", "   "));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        this.contents.append("\n```\n")
+            .append(exampleDescription);
+        if(newLine) newLine();
+        return this;
+    }
+
     public void newLine() {
         this.contents.append("\n");
     }
@@ -82,7 +130,7 @@ public class PageBuilder {
 
         private final StringBuilder content = new StringBuilder();
 
-        public TableBuilder init() {
+        public static TableBuilder init() {
             return new TableBuilder();
         }
 
