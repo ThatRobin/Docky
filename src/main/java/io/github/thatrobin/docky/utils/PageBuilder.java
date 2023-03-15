@@ -61,7 +61,47 @@ public class PageBuilder {
         return this;
     }
 
+    public PageBuilder addTable(TableBuilder builder) {
+        this.contents.append(builder.build());
+        return this;
+    }
+
+    public PageBuilder addTable(TableBuilder builder, boolean newLine) {
+        this.contents.append(builder.build());
+        if(newLine) newLine();
+        return this;
+    }
+
     public void newLine() {
         this.contents.append("\n");
     }
+
+
+
+    public static class TableBuilder {
+
+        private final StringBuilder content = new StringBuilder();
+
+        public TableBuilder init() {
+            return new TableBuilder();
+        }
+
+        public TableBuilder addRow(String... values) {
+            for (int i = 0; i < values.length; i++) {
+                content.append(values[i]);
+                if(i != values.length - 1) {
+                    content.append(" | ");
+                } else {
+                    content.append("\n");
+                }
+            }
+            return this;
+        }
+
+        public String build() {
+            return this.content.toString();
+        }
+
+    }
+
 }
