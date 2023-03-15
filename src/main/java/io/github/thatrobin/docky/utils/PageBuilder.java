@@ -149,7 +149,7 @@ public class PageBuilder {
         }
 
         public TableBuilder addBreak() {
-            content.append("|---|---|---|---|");
+            content.append("|---|---|---|---|\n");
             return this;
         }
 
