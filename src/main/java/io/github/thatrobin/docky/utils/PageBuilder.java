@@ -107,7 +107,9 @@ public class PageBuilder {
         private final StringBuilder content = new StringBuilder();
 
         public static TableBuilder init() {
-            return new TableBuilder();
+            TableBuilder tableBuilder = new TableBuilder();
+            tableBuilder.content.append("\n");
+            return tableBuilder;
         }
 
         public TableBuilder addRow(String... values) {
