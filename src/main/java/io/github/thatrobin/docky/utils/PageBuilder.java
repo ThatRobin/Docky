@@ -137,11 +137,11 @@ public class PageBuilder {
         }
 
         public TableBuilder addRow(String... values) {
+            content.append(" | ");
             for (int i = 0; i < values.length; i++) {
                 content.append(values[i]);
-                if(i != values.length - 1) {
-                    content.append(" | ");
-                } else {
+                content.append(" | ");
+                if(i == values.length - 1) {
                     content.append("\n");
                 }
             }
@@ -149,7 +149,7 @@ public class PageBuilder {
         }
 
         public TableBuilder addBreak() {
-            content.append("---|---|---|---");
+            content.append("|---|---|---|---|");
             return this;
         }
 
