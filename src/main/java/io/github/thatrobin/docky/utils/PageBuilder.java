@@ -23,9 +23,7 @@ public class PageBuilder {
     }
 
     public PageBuilder addTitle(String name) {
-        this.contents.append("# ").append(name);
-        newLine();
-        return this;
+        return addTitle(name, true);
     }
 
     public PageBuilder addTitle(String name, boolean newLine) {
@@ -35,9 +33,7 @@ public class PageBuilder {
     }
 
     public PageBuilder addSubTitle(String name) {
-        this.contents.append("## ").append(name);
-        newLine();
-        return this;
+        return addSubTitle(name, true);
     }
 
     public PageBuilder addSubTitle(String name, boolean newLine) {
@@ -47,9 +43,7 @@ public class PageBuilder {
     }
 
     public PageBuilder addText(String name) {
-        this.contents.append(name);
-        newLine();
-        return this;
+        return addText(name, true);
     }
 
     public PageBuilder addText(String name, boolean newLine) {
@@ -59,9 +53,7 @@ public class PageBuilder {
     }
 
     public PageBuilder addLink(String text, String link) {
-        this.contents.append("[").append(text).append("](").append(link).append(")");
-        newLine();
-        return this;
+        return addLink(text, link, true);
     }
 
     public PageBuilder addLink(String text, String link, boolean newLine) {
@@ -71,9 +63,7 @@ public class PageBuilder {
     }
 
     public PageBuilder addTable(TableBuilder builder) {
-        this.contents.append(builder.build());
-        newLine();
-        return this;
+        return addTable(builder, true);
     }
 
     public PageBuilder addTable(TableBuilder builder, boolean newLine) {
@@ -83,23 +73,7 @@ public class PageBuilder {
     }
 
     public PageBuilder addJson(String path) {
-        this.contents.append("```json\n");
-        String exampleDescription = "";
-        try {
-            JsonObject jsonObject = (JsonObject)JsonParser.parseReader(new FileReader(path));
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            if(jsonObject.has("example_description")) {
-                exampleDescription = JsonHelper.getString(jsonObject, "example_description");
-                jsonObject.remove("example_description");
-            }
-            this.contents.append(gson.toJson(jsonObject).replaceAll("\t", "   "));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        this.contents.append("```")
-            .append(exampleDescription);
-        newLine();
-        return this;
+        return addJson(path, true);
     }
 
     public PageBuilder addJson(String path, boolean newLine) {
