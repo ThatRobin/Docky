@@ -2,18 +2,18 @@ package io.github.thatrobin.docky.providers;
 
 import io.github.thatrobin.docky.DockyGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
 
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("unused")
-public class DockyReadTheDocsProvider implements DataProvider {
+public class DockyReadTheDocsProvider extends DockyDataProvider {
 
     public final FabricDataOutput dataOutput;
 
-    public DockyReadTheDocsProvider(FabricDataOutput dataOutput) {
+    public DockyReadTheDocsProvider(FabricDataOutput dataOutput, Path baseOutputPath) {
+        super(dataOutput, baseOutputPath);
         this.dataOutput = dataOutput;
     }
 
@@ -32,8 +32,8 @@ public class DockyReadTheDocsProvider implements DataProvider {
     }
 
     private Path getFilePath() {
-        return dataOutput
-            .getPath().resolve("wiki")
+        return this.getBaseOutput()
+            .resolve("wiki")
             .resolve(".readthedocs.yaml");
     }
 

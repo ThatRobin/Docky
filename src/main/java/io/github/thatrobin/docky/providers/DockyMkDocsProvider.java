@@ -3,19 +3,23 @@ package io.github.thatrobin.docky.providers;
 import io.github.thatrobin.docky.DockyGenerator;
 import io.github.thatrobin.docky.utils.MkdocsBuilder;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
 
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("unused")
-public class DockyMkDocsProvider implements DataProvider {
+public class DockyMkDocsProvider extends DockyDataProvider {
 
     public final FabricDataOutput dataOutput;
     public final MkdocsBuilder mkdocsBuilder;
 
     public DockyMkDocsProvider(FabricDataOutput dataOutput, MkdocsBuilder mkdocsBuilder) {
+        this(dataOutput, null, mkdocsBuilder);
+    }
+
+    public DockyMkDocsProvider(FabricDataOutput dataOutput, Path baseOutputPath, MkdocsBuilder mkdocsBuilder) {
+        super(dataOutput, baseOutputPath);
         this.dataOutput = dataOutput;
         this.mkdocsBuilder = mkdocsBuilder;
     }
@@ -26,8 +30,8 @@ public class DockyMkDocsProvider implements DataProvider {
     }
 
     private Path getFilePath() {
-        return dataOutput
-            .getPath().resolve("wiki")
+        return this.getBaseOutput()
+            .resolve("wiki")
             .resolve("mkdocs.yml");
     }
 

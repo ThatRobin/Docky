@@ -4,7 +4,6 @@ import io.github.thatrobin.docky.DockyEntry;
 import io.github.thatrobin.docky.DockyGenerator;
 import io.github.thatrobin.docky.DockyRegistry;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,12 +11,17 @@ import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("unused")
-public class DockyContentsPageProvider implements DataProvider {
+public class DockyContentsPageProvider extends DockyDataProvider {
 
     public final FabricDataOutput dataOutput;
     private final String label;
 
     public DockyContentsPageProvider(FabricDataOutput dataOutput, String label) {
+        this(dataOutput, null, label);
+    }
+
+    public DockyContentsPageProvider(FabricDataOutput dataOutput, Path baseOutputPath, String label) {
+        super(dataOutput, baseOutputPath);
         this.dataOutput = dataOutput;
         this.label = label;
     }
@@ -52,8 +56,7 @@ public class DockyContentsPageProvider implements DataProvider {
     }
 
     private Path getFilePath() {
-        return dataOutput
-            .getPath().resolve("wiki")
+        return this.getBaseOutput().resolve("wiki")
             .resolve("docs")
             .resolve(this.label + ".md");
     }

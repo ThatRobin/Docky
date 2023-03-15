@@ -3,35 +3,26 @@ package io.github.thatrobin.docky.providers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import io.github.apace100.calio.data.SerializableData;
-import io.github.apace100.calio.data.SerializableDataType;
-import io.github.apace100.calio.data.SerializableDataTypes;
-import io.github.thatrobin.docky.DockyEntry;
 import io.github.thatrobin.docky.DockyGenerator;
-import io.github.thatrobin.docky.utils.SerializableDataExt;
-import io.github.thatrobin.docky.utils.SerializableDataTypesRegistry;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
-import org.apache.commons.lang3.StringUtils;
 
-import java.io.FileReader;
-import java.lang.reflect.Field;
 import java.nio.file.Path;
-import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("unused")
-public class DockyDataTypesProvider implements DataProvider {
+public class DockyDataTypesProvider extends DockyDataProvider {
 
     public final FabricDataOutput dataOutput;
     public final JsonObject data;
     public final String name;
 
     public DockyDataTypesProvider(FabricDataOutput dataOutput, String name, JsonObject data) {
+        this(dataOutput, null, name, data);
+    }
+    public DockyDataTypesProvider(FabricDataOutput dataOutput, Path baseOutputPath, String name, JsonObject data) {
+        super(dataOutput, baseOutputPath);
         this.dataOutput = dataOutput;
         this.data = data;
         this.name = name;
@@ -135,8 +126,8 @@ public class DockyDataTypesProvider implements DataProvider {
     }
 
     private Path getFilePath() {
-        return dataOutput
-            .getPath().resolve("wiki")
+        return this.getBaseOutput()
+            .resolve("wiki")
             .resolve("docs")
             .resolve("data_types")
             .resolve(this.name + ".md");

@@ -12,7 +12,6 @@ import io.github.thatrobin.docky.mixin.SerializableDataTypeAccessor;
 import io.github.thatrobin.docky.utils.SerializableDataExt;
 import io.github.thatrobin.docky.utils.SerializableDataTypesRegistry;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
@@ -25,13 +24,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
-@SuppressWarnings("unused")
-public class DockyEntryProvider implements DataProvider {
+@SuppressWarnings({"unused", "unchecked", "rawtypes"})
+public class DockyEntryProvider extends DockyDataProvider {
 
-    public final FabricDataOutput dataOutput;
-    public final DockyEntry dockyEntry;
+    public FabricDataOutput dataOutput;
+    public DockyEntry dockyEntry;
 
     public DockyEntryProvider(FabricDataOutput dataOutput, DockyEntry dockyEntry) {
+        this(dataOutput, null, dockyEntry);
+    }
+
+    public DockyEntryProvider(FabricDataOutput dataOutput, Path baseOutputPath, DockyEntry dockyEntry) {
+        super(dataOutput, baseOutputPath);
         this.dataOutput = dataOutput;
         this.dockyEntry = dockyEntry;
     }
@@ -76,8 +80,8 @@ public class DockyEntryProvider implements DataProvider {
                     .append("` | ");
                 SerializableData.Field<?> field = data.getField(fieldName);
                 SerializableDataType<?> type = field.getDataType();
-                for (Class<?> closs : SerializableDataTypesRegistry.entries()) {
-                    for (Field field1 : closs.getFields()) {
+                for (Class<?> clazz : SerializableDataTypesRegistry.entries()) {
+                    for (Field field1 : clazz.getFields()) {
                         try {
                             Object obj = field1.get(null);
                             SerializableDataType<?> type2 = (SerializableDataType<?>) obj;
@@ -94,7 +98,7 @@ public class DockyEntryProvider implements DataProvider {
                                     builder.append("[Array](../data_types/array.md) of [")
                                         .append(StringUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                         .append("](../data_types/")
-                                        .append(field1.getName().toLowerCase(Locale.ROOT).replaceAll("([s])(?!\\S)", ""))
+                                        .append(field1.getName().toLowerCase(Locale.ROOT).replaceAll("(s)(?!\\S)", ""))
                                         .append(".md)");
                                 }
                             }
@@ -151,8 +155,8 @@ public class DockyEntryProvider implements DataProvider {
 
     private Path getFilePath() {
         Identifier id = this.dockyEntry.getFactory().getSerializerId();
-        return dataOutput
-            .getPath().resolve("wiki")
+        return this.getBaseOutput()
+            .resolve("wiki")
             .resolve("docs")
             .resolve(this.dockyEntry.getType())
             .resolve(id.getPath() + ".md");
