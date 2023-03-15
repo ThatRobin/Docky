@@ -116,10 +116,8 @@ public class PageBuilder {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        newLine();
-        this.contents.append("```");
-        newLine();
-        this.contents.append(exampleDescription);
+        this.contents.append("\n```\n")
+            .append(exampleDescription);
         if(newLine) newLine();
         return this;
     }
