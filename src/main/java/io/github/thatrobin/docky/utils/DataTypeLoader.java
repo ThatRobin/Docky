@@ -39,7 +39,7 @@ public class DataTypeLoader {
 
     public static void provideApoliDataTypes(FabricDataGenerator.Pack pack, Path outputPath) {
         for (Map.Entry<String, PageBuilder> entry : DataTypeRegistry.entries()) {
-            pack.addProvider(((output, future) -> new DockyPageProvider(output, outputPath, entry.getKey(), entry.getValue())));
+            pack.addProvider(((output, future) -> new DockyPageProvider(output, outputPath, entry.getKey(), "docs/data_types", entry.getValue())));
         }
     }
 
