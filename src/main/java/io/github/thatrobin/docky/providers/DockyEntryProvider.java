@@ -15,7 +15,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.data.DataWriter;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
-import org.gradle.internal.impldep.org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.FileReader;
 import java.lang.reflect.Field;
