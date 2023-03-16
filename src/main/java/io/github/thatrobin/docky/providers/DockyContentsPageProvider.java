@@ -5,7 +5,7 @@ import io.github.thatrobin.docky.DockyGenerator;
 import io.github.thatrobin.docky.DockyRegistry;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.data.DataWriter;
-import org.apache.commons.lang3.StringUtils;
+import org.gradle.internal.impldep.org.apache.commons.lang.WordUtils;
 
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
@@ -34,7 +34,7 @@ public class DockyContentsPageProvider extends DockyDataProvider {
     String generateContentsPages() {
         StringBuilder builder = new StringBuilder();
         builder.append("# ")
-            .append(StringUtils.capitalize(this.label.replaceAll("_", " ")))
+            .append(WordUtils.capitalize(this.label.replaceAll("_", " ")))
             .append("\n\n\n")
             .append("### List\n");
 
@@ -44,7 +44,7 @@ public class DockyContentsPageProvider extends DockyDataProvider {
 
             if(this.label.equals(subfolder)) {
                 builder.append("\n * [")
-                    .append(StringUtils.capitalize(name.replace(".md", "").replaceAll("_", " ")))
+                    .append(WordUtils.capitalize(name.replace(".md", "").replaceAll("_", " ")))
                     .append("](")
                     .append(subfolder)
                     .append("/")

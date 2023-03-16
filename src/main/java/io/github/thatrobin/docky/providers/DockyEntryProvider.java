@@ -15,7 +15,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.data.DataWriter;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
-import org.apache.commons.lang3.StringUtils;
+import org.gradle.internal.impldep.org.apache.commons.lang.WordUtils;
 
 import java.io.FileReader;
 import java.lang.reflect.Field;
@@ -56,9 +56,9 @@ public class DockyEntryProvider extends DockyDataProvider {
 
         StringBuilder builder = new StringBuilder();
         builder.append("# ")
-            .append(StringUtils.capitalize(id.getPath().replaceAll("_", " ")))
+            .append(WordUtils.capitalize(id.getPath().replaceAll("_", " ")))
             .append("\n[")
-            .append(StringUtils.capitalize(prefix.replaceAll("_", " ")))
+            .append(WordUtils.capitalize(prefix.replaceAll("_", " ")))
             .append("](../")
             .append(prefix)
             .append("_types.md)\n");
@@ -88,7 +88,7 @@ public class DockyEntryProvider extends DockyDataProvider {
                             if(!((SerializableDataTypeAccessor)type2).getDataClass().isAssignableFrom(List.class)) {
                                 if (type2.equals(type)) {
                                     builder.append("[")
-                                        .append(StringUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
+                                        .append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                         .append("](../data_types/")
                                         .append(field1.getName().toLowerCase(Locale.ROOT))
                                         .append(".md)");
@@ -96,7 +96,7 @@ public class DockyEntryProvider extends DockyDataProvider {
                             } else {
                                 if (type2.equals(type)) {
                                     builder.append("[Array](../data_types/array.md) of [")
-                                        .append(StringUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
+                                        .append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                         .append("](../data_types/")
                                         .append(field1.getName().toLowerCase(Locale.ROOT).replaceAll("(s)(?!\\S)", ""))
                                         .append(".md)");

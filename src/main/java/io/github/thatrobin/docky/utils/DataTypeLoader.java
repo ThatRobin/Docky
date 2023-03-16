@@ -43,11 +43,17 @@ public class DataTypeLoader {
         }
     }
 
+    public static void provideApoliDataTypes(FabricDataGenerator.Pack pack, Path outputPath, String location) {
+        for (Map.Entry<String, PageBuilder> entry : DataTypeRegistry.entries()) {
+            pack.addProvider(((output, future) -> new DockyPageProvider(output, outputPath, entry.getKey(), location, entry.getValue())));
+        }
+    }
+
     public static PageBuilder gen_array() {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Array")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("Arrays are lists of other existing data types. They are enclosed by square brackets and each element is separated from the next by a comma.");
 
         return pageBuilder;
@@ -57,7 +63,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Attribute Modifier")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) used to specify how a value should be modified.");
 
         pageBuilder.addSubTitle("Fields");
@@ -78,7 +84,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Modifier Operation")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("A [String](string.md) used to specify the operation used by [Attribute Modifiers](attribute_modifier.md).")
             .addNote("The listed values are ordered based on the order of priority; with `add_base_early` being applied before the other modifiers and `set_total` being applied last.");
 
@@ -107,7 +113,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Attributed Attribute Modifier")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) used to specify how a specific attribute should be modified. Basically an [Attribute Modifier](attribute_modifier.md) with an additional `attribute` field.");
 
         pageBuilder.addSubTitle("Fields");
@@ -127,7 +133,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Attributed Attribute Modifier Operation")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("A [string](string.md) used to specify the operation used by [Attributed Attribute Modifiers](attributed_attribute_modifier.md).")
             .addNote("The listed values are ordered based on the order of priority; with `addition` being applied before `multiply_base` and `multiply_total` being applied last.");
 
@@ -147,7 +153,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Boolean")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("A data type of which the value can be either `true` or `false`.");
         return pageBuilder;
     }
@@ -156,7 +162,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Comparison")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("A [String](string.md) which specifies how two numbers should be compared. Usually the first number is provided by whatever condition you are in, and the second is specified in an accompanying `compare_to` field.");
 
         pageBuilder.addSubTitle("Values");
@@ -178,7 +184,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Crafting Recipe")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) specifying a shapeless or shaped crafting recipe. For some more information, view [the page on recipes on the MC wiki](https://minecraft.gamepedia.com/Recipe).");
 
         pageBuilder.addSubTitle("Fields (both types)");
@@ -214,7 +220,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Damage Source")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) used to specify how to deal damage to an entity.");
 
         pageBuilder.addSubTitle("Fields");
@@ -236,7 +242,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Float")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("A floating point (decimal) number, like `6.0`, `-1.5` or `0.1`.");
         return pageBuilder;
     }
@@ -245,7 +251,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Hud Render")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) used to define how a resource or cooldown bar should be rendered.");
 
         pageBuilder.addSubTitle("Fields");
@@ -266,7 +272,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Identifier")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("A [String](string.md) which specifies an identifier used in Minecraft. They are used to refer to items, blocks, status effects, locations in data or resource packs, and a lot of other things.\n" +
                 "\n" +
                 "\n" +
@@ -282,7 +288,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Ingredient")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("_Either_: an [Object](object.md) specifying a registered item or item tag.\n" +
                 "\n" +
                 "_Or_: an [Array](array.md) of [Objects](object.md) specifying a registered item or item tag.");
@@ -302,7 +308,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Integer")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("A whole number (integer number), like 3 or -1. Numbers such as 0.3 or 5.5 are not allowed, those would be [Floats](float.md).");
         return pageBuilder;
     }
@@ -311,7 +317,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Item Slot")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("A [string](string.md) that represents a slot from an entity or container's inventory.")
             .addNote("It's recommended to use the `container.<slot_number>` item slots for representing the slots of a power that uses the [Inventory (Power Type)](../power_types/inventory.md)");
 
@@ -343,7 +349,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Item Stack")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) which defines a new item stack.");
 
         pageBuilder.addSubTitle("Fields");
@@ -362,7 +368,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Key")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) which defines a keybinding, used in active powers to define which key they react to.");
 
         pageBuilder.addSubTitle("Fields");
@@ -380,7 +386,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Object")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("A complex piece of data consisting of more fields. Objects are enclosed in curly braces and contain multiple `\"key\": value` entries separated by commas.");
         return pageBuilder;
     }
@@ -389,7 +395,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Particle Effect")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("A data type that's either a [string](string.md) which defines only the particle type or an [object](object.md) which defines the particle type and its additional parameters.")
             .addNote("Refer to the [Minecraft Fandom Wiki: Particles (Particle IDs)](https://minecraft.fandom.com/wiki/Particles#Particle_IDs) page for a list of **vanilla** particle type IDs that you can use.");
 
@@ -408,7 +414,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Positioned Item Stack")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) which defines a new item stack alongside a position in an inventory. Basically an [Item Stack](item_stack.md) with a `slot` field.");
 
         pageBuilder.addSubTitle("Fields");
@@ -428,7 +434,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Stat")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [object](object.md) specifying a statistic via a statistic type and an [identifier](identifier.md).")
             .addNote("See [Minecraft Fandom Wiki: Statistic (Resource location)](https://minecraft.fandom.com/wiki/Statistics#Resource_location) for a list of vanilla statistic types and names.");
 
@@ -447,7 +453,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Status Effect Instance")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) used to define a status effect with duration, amplifier, etc.");
 
         pageBuilder.addSubTitle("Fields");
@@ -469,7 +475,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("String")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("A piece of text. Has to be enclosed by quotation marks. Please note that if there are supposed to be quotation marks within the text itself, they need to be escaped with a backslash. (`\\`)");
         return pageBuilder;
     }
@@ -478,7 +484,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Text Component")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("A [string](string.md) or [object](object.md) used for displaying text with fancy formatting.")
             .addNote("You can refer to [Minecraft Fandom: Raw JSON text format](https://minecraft.fandom.com/wiki/Raw_JSON_text_format) for JSON text components you can use.");
         return pageBuilder;
@@ -488,7 +494,7 @@ public class DataTypeLoader {
         PageBuilder pageBuilder = PageBuilder.init();
 
         pageBuilder.addTitle("Vector")
-            .addLink("Data Type", "../data_types.md")
+            .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) that specifies the X, Y and Z coordinates of a certain point in space.");
 
         pageBuilder.addSubTitle("Fields");

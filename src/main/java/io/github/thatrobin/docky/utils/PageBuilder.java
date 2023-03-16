@@ -107,8 +107,9 @@ public class PageBuilder {
         return this;
     }
 
-    public void newLine() {
+    public PageBuilder newLine() {
         this.contents.append("\n");
+        return this;
     }
 
 
