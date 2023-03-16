@@ -14,7 +14,7 @@ public class DataTypeLoader {
         DataTypeRegistry.register("attribute_modifier", gen_attribute_modifier());
         DataTypeRegistry.register("modifier_operation", gen_attribute_modifier_operation());
         DataTypeRegistry.register("attributed_attribute_modifier", gen_attributed_attribute_modifier());
-        DataTypeRegistry.register("modifier_operation", gen_attributed_attribute_modifier_operation());
+        DataTypeRegistry.register("attributed_modifier_operation", gen_attributed_attribute_modifier_operation());
         DataTypeRegistry.register("boolean", gen_boolean());
         DataTypeRegistry.register("comparison", gen_comparison());
         DataTypeRegistry.register("recipe", gen_recipe());
