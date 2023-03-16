@@ -59,7 +59,7 @@ public class DockyEntryProvider extends DockyDataProvider {
             .append(StringUtils.capitalize(id.getPath().replaceAll("_", " ")))
             .append("\n[")
             .append(StringUtils.capitalize(prefix.replaceAll("_", " ")))
-            .append(" Type](../")
+            .append("](../")
             .append(prefix)
             .append("_types.md)\n");
 

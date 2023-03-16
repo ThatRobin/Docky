@@ -9,7 +9,6 @@ import net.minecraft.util.JsonHelper;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-@SuppressWarnings("unused")
 public class PageBuilder {
 
     private final StringBuilder contents = new StringBuilder();
@@ -92,6 +91,18 @@ public class PageBuilder {
         }
         this.contents.append("\n```\n")
             .append(exampleDescription);
+        if(newLine) newLine();
+        return this;
+    }
+
+
+    public PageBuilder addNote(String text) {
+        return addNote(text, true);
+    }
+
+    public PageBuilder addNote(String text, boolean newLine) {
+        this.contents.append("!!! note\n    \n  ")
+            .append(text);
         if(newLine) newLine();
         return this;
     }
