@@ -109,7 +109,7 @@ public class DockyEntryProvider extends DockyDataProvider {
                                         builder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                             .append("](../data_types/")
                                             .append(field1.getName().toLowerCase(Locale.ROOT).replaceAll("(s)(?!\\S)", ""))
-                                            .append(".md");
+                                            .append(".md)");
                                     }
                                 }
                             }
