@@ -86,8 +86,8 @@ public class DockyEntryProvider extends DockyDataProvider {
                         try {
                             Object obj = field1.get(null);
                             SerializableDataType<?> type2 = (SerializableDataType<?>) obj;
-                            if (!((SerializableDataTypeAccessor) type2).getDataClass().isAssignableFrom(List.class)) {
-                                if (type2.equals(type)) {
+                            if (type2.equals(type)) {
+                                if (!((SerializableDataTypeAccessor) type2).getDataClass().isAssignableFrom(List.class)) {
                                     builder.append("[");
                                     if (DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
                                         builder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
@@ -96,12 +96,10 @@ public class DockyEntryProvider extends DockyDataProvider {
                                     } else {
                                         builder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                             .append("](../data_types/")
-                                            .append(field1.getName().toLowerCase(Locale.ROOT));
+                                            .append(field1.getName().toLowerCase(Locale.ROOT))
+                                            .append(".md)");
                                     }
-                                    builder.append(".md)");
-                                }
-                            } else {
-                                if (type2.equals(type)) {
+                                } else {
                                     builder.append("[Array](../data_types/array.md) of [");
                                     if(DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
                                         builder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
@@ -110,9 +108,9 @@ public class DockyEntryProvider extends DockyDataProvider {
                                     } else {
                                         builder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                             .append("](../data_types/")
-                                            .append(field1.getName().toLowerCase(Locale.ROOT).replaceAll("(s)(?!\\S)", ""));
+                                            .append(field1.getName().toLowerCase(Locale.ROOT).replaceAll("(s)(?!\\S)", ""))
+                                            .append(".md");
                                     }
-                                    builder.append(".md");
                                 }
                             }
                         } catch (IllegalAccessException e) {

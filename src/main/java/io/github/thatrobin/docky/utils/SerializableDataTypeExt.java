@@ -61,14 +61,18 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
                                 Object obj = field1.get(null);
                                 SerializableDataType<?> type2 = (SerializableDataType<?>) obj;
                                 if (type2 != null) {
-                                    if (!((SerializableDataTypeAccessor) type2).getDataClass().isAssignableFrom(List.class)) {
-                                        if (type2.equals(type)) {
+                                    if (type2.equals(type)) {
+                                        if (!((SerializableDataTypeAccessor) type2).getDataClass().isAssignableFrom(List.class)) {
                                             StringBuilder typeBuilder = new StringBuilder();
                                             typeBuilder.append("[");
                                             if (DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
                                                 typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                                     .append("](")
                                                     .append(DataTypeRedirector.get().get(field1.getName().toLowerCase()));
+                                                Docky.LOGGER.info(field1.getName().toLowerCase());
+                                                Docky.LOGGER.info(DataTypeRedirector.get().get(field1.getName().toLowerCase()));
+                                                Docky.LOGGER.info(DataTypeRedirector.get().keySet());
+                                                Docky.LOGGER.info(DataTypeRedirector.get().values());
                                             } else {
                                                 typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                                     .append("](../data_types/")
@@ -76,9 +80,7 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
                                                     .append(".md)");
                                             }
                                             row[1] = typeBuilder.toString();
-                                        }
-                                    } else {
-                                        if (type2.equals(type)) {
+                                        } else {
                                             StringBuilder typeBuilder = new StringBuilder("[Array](../data_types/array.md) of [");
                                             if(DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
                                                 typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
