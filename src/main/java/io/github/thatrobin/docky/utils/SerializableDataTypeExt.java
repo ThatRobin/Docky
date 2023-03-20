@@ -49,26 +49,35 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
                 for (Class<?> clazz : SerializableDataTypesRegistry.entries()) {
                     for (Field field1 : clazz.getFields()) {
                         try {
-                            Object obj = field1.get(null);
-                            SerializableDataType<?> type2 = (SerializableDataType<?>) obj;
-                            if(type2 != null) {
-                                if (!((SerializableDataTypeAccessor) type2).getDataClass().isAssignableFrom(List.class)) {
-                                    if (type2.equals(type)) {
-                                        String typeBuilder = "[" +
-                                            WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)) +
-                                            "](../data_types/" +
-                                            field1.getName().toLowerCase(Locale.ROOT) +
-                                            ".md)";
-                                        row[1] = typeBuilder;
-                                    }
-                                } else {
-                                    if (type2.equals(type)) {
-                                        String typeBuilder = "[Array](../data_types/array.md) of [" +
-                                            WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)) +
-                                            "](../data_types/" +
-                                            field1.getName().toLowerCase(Locale.ROOT).replaceAll("(s)(?!\\S)", "") +
-                                            ".md)";
-                                        row[1] = typeBuilder;
+                            if(DataTypeRedirector.get().containsKey(field1.getName())) {
+                                String typeBuilder = "[" +
+                                    WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)) +
+                                    "](" +
+                                    DataTypeRedirector.get().get(field1.getName()) +
+                                    ".md)";
+                                row[1] = typeBuilder;
+                            } else {
+                                Object obj = field1.get(null);
+                                SerializableDataType<?> type2 = (SerializableDataType<?>) obj;
+                                if (type2 != null) {
+                                    if (!((SerializableDataTypeAccessor) type2).getDataClass().isAssignableFrom(List.class)) {
+                                        if (type2.equals(type)) {
+                                            String typeBuilder = "[" +
+                                                WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)) +
+                                                "](../data_types/" +
+                                                field1.getName().toLowerCase(Locale.ROOT) +
+                                                ".md)";
+                                            row[1] = typeBuilder;
+                                        }
+                                    } else {
+                                        if (type2.equals(type)) {
+                                            String typeBuilder = "[Array](../data_types/array.md) of [" +
+                                                WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)) +
+                                                "](../data_types/" +
+                                                field1.getName().toLowerCase(Locale.ROOT).replaceAll("(s)(?!\\S)", "") +
+                                                ".md)";
+                                            row[1] = typeBuilder;
+                                        }
                                     }
                                 }
                             }
