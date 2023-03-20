@@ -79,7 +79,7 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
                                         }
                                     } else {
                                         if (type2.equals(type)) {
-                                            StringBuilder typeBuilder = new StringBuilder("\"[Array](../data_types/array.md) of [\"");
+                                            StringBuilder typeBuilder = new StringBuilder("[Array](../data_types/array.md) of [");
                                             if(DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
                                                 typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                                     .append("](")
@@ -112,8 +112,8 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
                     row[2] = "_optional_";
                 }
                 row[3] = dataExt.getDescription(fieldName);
+                tableBuilder.addRow(row);
             }
-            tableBuilder.addRow(row);
         }
         builder.addTable(tableBuilder);
 
