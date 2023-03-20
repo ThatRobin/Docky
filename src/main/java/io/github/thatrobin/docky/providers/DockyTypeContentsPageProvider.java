@@ -11,16 +11,16 @@ import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("unused")
-public class DockyContentsPageProvider extends DockyDataProvider {
+public class DockyTypeContentsPageProvider extends DockyDataProvider {
 
     public final FabricDataOutput dataOutput;
     private final String label;
 
-    public DockyContentsPageProvider(FabricDataOutput dataOutput, String label) {
+    public DockyTypeContentsPageProvider(FabricDataOutput dataOutput, String label) {
         this(dataOutput, null, label);
     }
 
-    public DockyContentsPageProvider(FabricDataOutput dataOutput, Path baseOutputPath, String label) {
+    public DockyTypeContentsPageProvider(FabricDataOutput dataOutput, Path baseOutputPath, String label) {
         super(dataOutput, baseOutputPath);
         this.dataOutput = dataOutput;
         this.label = label;
