@@ -10,6 +10,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -48,23 +49,25 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
                         try {
                             Object obj = field1.get(null);
                             SerializableDataType<?> type2 = (SerializableDataType<?>) obj;
-                            if(!((SerializableDataTypeAccessor)type2).getDataClass().isAssignableFrom(List.class)) {
-                                if (type2.equals(type)) {
-                                    String typeBuilder = "[" +
-                                        WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)) +
-                                        "](../data_types/" +
-                                        field1.getName().toLowerCase(Locale.ROOT) +
-                                        ".md)";
-                                    row[1] = typeBuilder;
-                                }
-                            } else {
-                                if (type2.equals(type)) {
-                                    String typeBuilder = "[Array](../data_types/array.md) of [" +
-                                        WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)) +
-                                        "](../data_types/" +
-                                        field1.getName().toLowerCase(Locale.ROOT).replaceAll("(s)(?!\\S)", "") +
-                                        ".md)";
-                                    row[1] = typeBuilder;
+                            if(type2 != null) {
+                                if (!((SerializableDataTypeAccessor) type2).getDataClass().isAssignableFrom(List.class)) {
+                                    if (type2.equals(type)) {
+                                        String typeBuilder = "[" +
+                                            WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)) +
+                                            "](../data_types/" +
+                                            field1.getName().toLowerCase(Locale.ROOT) +
+                                            ".md)";
+                                        row[1] = typeBuilder;
+                                    }
+                                } else {
+                                    if (type2.equals(type)) {
+                                        String typeBuilder = "[Array](../data_types/array.md) of [" +
+                                            WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)) +
+                                            "](../data_types/" +
+                                            field1.getName().toLowerCase(Locale.ROOT).replaceAll("(s)(?!\\S)", "") +
+                                            ".md)";
+                                        row[1] = typeBuilder;
+                                    }
                                 }
                             }
                         } catch (IllegalAccessException e) {
@@ -89,8 +92,10 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
         }
         builder.addTable(tableBuilder);
 
-        builder.addSubTitle("Example");
-        builder.addJson(examplePath);
+        if(!examplePath.equals("")) {
+            builder.addSubTitle("Example");
+            builder.addJson(examplePath);
+        }
         return builder;
     }
 
