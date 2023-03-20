@@ -4,7 +4,7 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public class DataTypeRegistry {
-    private static final Map<String, PageBuilder> DATA_TYPES = new HashMap<>();
+    private static final Map<String, PageBuilder> DATA_TYPES = new TreeMap<>();
 
     public static void register(String key, PageBuilder value) {
         if(DATA_TYPES.containsKey(key)) {

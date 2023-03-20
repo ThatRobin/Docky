@@ -15,16 +15,14 @@ import java.util.concurrent.CompletableFuture;
 public class DockyDataTypeContentsPageProvider extends DockyDataProvider {
 
     public final FabricDataOutput dataOutput;
-    private final String label;
 
-    public DockyDataTypeContentsPageProvider(FabricDataOutput dataOutput, String label) {
-        this(dataOutput, null, label);
+    public DockyDataTypeContentsPageProvider(FabricDataOutput dataOutput) {
+        this(dataOutput, null);
     }
 
-    public DockyDataTypeContentsPageProvider(FabricDataOutput dataOutput, Path baseOutputPath, String label) {
+    public DockyDataTypeContentsPageProvider(FabricDataOutput dataOutput, Path baseOutputPath) {
         super(dataOutput, baseOutputPath);
         this.dataOutput = dataOutput;
-        this.label = label;
     }
 
     @Override
@@ -61,6 +59,6 @@ public class DockyDataTypeContentsPageProvider extends DockyDataProvider {
 
     @Override
     public String getName() {
-        return this.label;
+        return "data_types";
     }
 }

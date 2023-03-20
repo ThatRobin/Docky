@@ -21,18 +21,20 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
         super(dataClass, send, receive, read);
     }
 
-    public static <T> SerializableDataType<T> compound(String title, Class<T> dataClass, SerializableDataExt data, Function<SerializableData.Instance, T> toInstance, BiFunction<SerializableData, T, SerializableData.Instance> toData, String examplePath) {
-        DataTypeRegistry.register(title, generatePage(title, data, examplePath));
+    public static <T> SerializableDataType<T> compound(String title, String description, Class<T> dataClass, SerializableDataExt data, Function<SerializableData.Instance, T> toInstance, BiFunction<SerializableData, T, SerializableData.Instance> toData, String examplePath) {
+        DataTypeRegistry.register(title, generatePage(title, description, data, examplePath));
         return new SerializableDataType<>(dataClass,
             (buf, t) -> data.write(buf, toData.apply(data, t)),
             (buf) -> toInstance.apply(data.read(buf)),
             (json) -> toInstance.apply(data.read(json.getAsJsonObject())));
     }
 
-    public static PageBuilder generatePage(String title, SerializableDataExt dataExt, String examplePath) {
+    public static PageBuilder generatePage(String title, String description, SerializableDataExt dataExt, String examplePath) {
         PageBuilder builder = new PageBuilder();
         builder.addTitle(WordUtils.capitalize(title.replaceAll("_", " ")));
         builder.addText("[Data Type](../data_types.md)");
+
+        builder.addText(description);
 
         builder.addSubTitle("Fields");
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
