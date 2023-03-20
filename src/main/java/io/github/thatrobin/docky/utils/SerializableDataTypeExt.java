@@ -68,7 +68,7 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
                                             if (DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
                                                 typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                                     .append("](")
-                                                    .append(DataTypeRedirector.get().get(field1.getName()));
+                                                    .append(DataTypeRedirector.get().get(field1.getName().toLowerCase()));
                                             } else {
                                                 typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                                     .append("](../data_types/")
@@ -82,7 +82,7 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
                                             if(DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
                                                 typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                                     .append("](")
-                                                    .append(DataTypeRedirector.get().get(field1.getName()));
+                                                    .append(DataTypeRedirector.get().get(field1.getName().toLowerCase()));
                                             } else {
                                                 typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                                     .append("](../data_types/")

@@ -92,7 +92,7 @@ public class DockyEntryProvider extends DockyDataProvider {
                                     if (DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
                                         builder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                             .append("](")
-                                            .append(DataTypeRedirector.get().get(field1.getName()));
+                                            .append(DataTypeRedirector.get().get(field1.getName().toLowerCase()));
                                     } else {
                                         builder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                             .append("](../data_types/")
@@ -106,7 +106,7 @@ public class DockyEntryProvider extends DockyDataProvider {
                                     if(DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
                                         builder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                             .append("](")
-                                            .append(DataTypeRedirector.get().get(field1.getName()));
+                                            .append(DataTypeRedirector.get().get(field1.getName().toLowerCase()));
                                     } else {
                                         builder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                             .append("](../data_types/")
