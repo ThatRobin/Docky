@@ -72,9 +72,10 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
                                             } else {
                                                 typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                                     .append("](../data_types/")
-                                                    .append(field1.getName().toLowerCase(Locale.ROOT));
+                                                    .append(field1.getName().toLowerCase(Locale.ROOT))
+                                                    .append(".md)");
                                             }
-                                            row[1] = typeBuilder.append(".md)").toString();
+                                            row[1] = typeBuilder.toString();
                                         }
                                     } else {
                                         if (type2.equals(type)) {
@@ -86,9 +87,10 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
                                             } else {
                                                 typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                                     .append("](../data_types/")
-                                                    .append(field1.getName().toLowerCase(Locale.ROOT).replaceAll("(s)(?!\\S)", ""));
+                                                    .append(field1.getName().toLowerCase(Locale.ROOT).replaceAll("(s)(?!\\S)", ""))
+                                                    .append(".md)");
                                             }
-                                            row[1] = typeBuilder.append(".md").toString();
+                                            row[1] = typeBuilder.toString();
                                         }
                                     }
                                 }
