@@ -62,38 +62,25 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
                                 SerializableDataType<?> type2 = (SerializableDataType<?>) obj;
                                 if (type2 != null) {
                                     if (type2.equals(type)) {
-                                        Docky.LOGGER.info(field1.getName().toLowerCase());
-                                        Docky.LOGGER.info(DataTypeRedirector.get().get(field1.getName().toLowerCase()));
-                                        Docky.LOGGER.info(DataTypeRedirector.get().keySet());
-                                        Docky.LOGGER.info(DataTypeRedirector.get().values());
-                                        if (!((SerializableDataTypeAccessor) type2).getDataClass().isAssignableFrom(List.class)) {
-                                            StringBuilder typeBuilder = new StringBuilder();
-                                            typeBuilder.append("[");
-                                            if (DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
-                                                typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
-                                                    .append("](")
-                                                    .append(DataTypeRedirector.get().get(field1.getName().toLowerCase()));
-                                            } else {
-                                                typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
-                                                    .append("](../data_types/")
-                                                    .append(field1.getName().toLowerCase(Locale.ROOT))
-                                                    .append(".md)");
-                                            }
-                                            row[1] = typeBuilder.toString();
-                                        } else {
-                                            StringBuilder typeBuilder = new StringBuilder("[Array](../data_types/array.md) of [");
-                                            if(DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
-                                                typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
-                                                    .append("](")
-                                                    .append(DataTypeRedirector.get().get(field1.getName().toLowerCase()));
-                                            } else {
-                                                typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
-                                                    .append("](../data_types/")
-                                                    .append(field1.getName().toLowerCase(Locale.ROOT).replaceAll("(s)(?!\\S)", ""))
-                                                    .append(".md)");
-                                            }
-                                            row[1] = typeBuilder.toString();
+                                        StringBuilder typeBuilder = new StringBuilder();
+                                        String temp = field1.getName().toLowerCase(Locale.ROOT);
+                                        typeBuilder.append("[");
+                                        if (((SerializableDataTypeAccessor) type2).getDataClass().isAssignableFrom(List.class)) {
+                                            typeBuilder.append("Array](../data_types/array.md) of [");
+                                            temp = temp.replaceAll("(s)(?!\\S)", "");
                                         }
+                                        if(DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
+                                            typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
+                                                .append("](")
+                                                .append(DataTypeRedirector.get().get(field1.getName().toLowerCase()));
+                                        } else {
+                                            typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
+                                                .append("](../data_types/")
+                                                .append(temp)
+                                                .append(".md)");
+                                        }
+                                        Docky.LOGGER.info(typeBuilder);
+                                        row[1] = typeBuilder.toString();
                                     }
                                 }
                             }
