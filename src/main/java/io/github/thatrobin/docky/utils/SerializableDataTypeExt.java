@@ -32,7 +32,7 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
     public static PageBuilder generatePage(String title, String description, SerializableDataExt dataExt, String examplePath) {
         PageBuilder builder = new PageBuilder();
         builder.addTitle(WordUtils.capitalize(title.replaceAll("_", " ")));
-        builder.addText("[Data Type](../data_types.md)");
+        builder.addText("[Data Type](../data_types.md)").newLine();
 
         builder.addText(description);
 
