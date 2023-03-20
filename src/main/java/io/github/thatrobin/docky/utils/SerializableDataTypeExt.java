@@ -3,6 +3,7 @@ package io.github.thatrobin.docky.utils;
 import com.google.gson.JsonElement;
 import io.github.apace100.calio.data.SerializableData;
 import io.github.apace100.calio.data.SerializableDataType;
+import io.github.thatrobin.docky.Docky;
 import io.github.thatrobin.docky.mixin.SerializableDataTypeAccessor;
 import net.minecraft.network.PacketByteBuf;
 import org.apache.commons.lang3.text.WordUtils;
@@ -49,7 +50,7 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
                 for (Class<?> clazz : SerializableDataTypesRegistry.entries()) {
                     for (Field field1 : clazz.getFields()) {
                         try {
-                            if(DataTypeRedirector.get().containsKey(field1.getName())) {
+                            if(DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
                                 String typeBuilder = "[" +
                                     WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)) +
                                     "](" +
@@ -62,21 +63,32 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
                                 if (type2 != null) {
                                     if (!((SerializableDataTypeAccessor) type2).getDataClass().isAssignableFrom(List.class)) {
                                         if (type2.equals(type)) {
-                                            String typeBuilder = "[" +
-                                                WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)) +
-                                                "](../data_types/" +
-                                                field1.getName().toLowerCase(Locale.ROOT) +
-                                                ".md)";
-                                            row[1] = typeBuilder;
+                                            StringBuilder typeBuilder = new StringBuilder();
+                                            typeBuilder.append("[");
+                                            if (DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
+                                                typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
+                                                    .append("](")
+                                                    .append(DataTypeRedirector.get().get(field1.getName()));
+                                            } else {
+                                                typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
+                                                    .append("](../data_types/")
+                                                    .append(field1.getName().toLowerCase(Locale.ROOT));
+                                            }
+                                            row[1] = typeBuilder.append(".md)").toString();
                                         }
                                     } else {
                                         if (type2.equals(type)) {
-                                            String typeBuilder = "[Array](../data_types/array.md) of [" +
-                                                WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)) +
-                                                "](../data_types/" +
-                                                field1.getName().toLowerCase(Locale.ROOT).replaceAll("(s)(?!\\S)", "") +
-                                                ".md)";
-                                            row[1] = typeBuilder;
+                                            StringBuilder typeBuilder = new StringBuilder("\"[Array](../data_types/array.md) of [\"");
+                                            if(DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
+                                                typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
+                                                    .append("](")
+                                                    .append(DataTypeRedirector.get().get(field1.getName()));
+                                            } else {
+                                                typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
+                                                    .append("](../data_types/")
+                                                    .append(field1.getName().toLowerCase(Locale.ROOT).replaceAll("(s)(?!\\S)", ""));
+                                            }
+                                            row[1] = typeBuilder.append(".md").toString();
                                         }
                                     }
                                 }
