@@ -69,6 +69,8 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
                                             typeBuilder.append("Array](../data_types/array.md) of [");
                                             temp = temp.replaceAll("(s)(?!\\S)", "");
                                         }
+                                        Docky.LOGGER.info(temp);
+                                        Docky.LOGGER.info(DataTypeRedirector.get().keySet());
                                         if(DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
                                             typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
                                                 .append("](")
