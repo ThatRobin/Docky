@@ -115,23 +115,6 @@ public class DockyEntryProvider extends DockyDataProvider {
                                     builder.append(".md");
                                 }
                             }
-                            if(!((SerializableDataTypeAccessor)type2).getDataClass().isAssignableFrom(List.class)) {
-                                if (type2.equals(type)) {
-                                    builder.append("[")
-                                        .append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
-                                        .append("](../data_types/")
-                                        .append(field1.getName().toLowerCase(Locale.ROOT))
-                                        .append(".md)");
-                                }
-                            } else {
-                                if (type2.equals(type)) {
-                                    builder.append("[Array](../data_types/array.md) of [")
-                                        .append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
-                                        .append("](../data_types/")
-                                        .append(field1.getName().toLowerCase(Locale.ROOT).replaceAll("(s)(?!\\S)", ""))
-                                        .append(".md)");
-                                }
-                            }
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }
