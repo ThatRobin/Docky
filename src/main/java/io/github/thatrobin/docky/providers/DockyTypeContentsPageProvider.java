@@ -3,6 +3,7 @@ package io.github.thatrobin.docky.providers;
 import io.github.thatrobin.docky.DockyEntry;
 import io.github.thatrobin.docky.DockyGenerator;
 import io.github.thatrobin.docky.DockyRegistry;
+import io.github.thatrobin.docky.utils.PageBuilder;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.data.DataWriter;
 import org.apache.commons.lang3.text.WordUtils;
@@ -10,7 +11,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "deprecation"})
 public class DockyTypeContentsPageProvider extends DockyDataProvider {
 
     public final FabricDataOutput dataOutput;
@@ -32,24 +33,17 @@ public class DockyTypeContentsPageProvider extends DockyDataProvider {
     }
 
     String generateContentsPages() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("# ")
-            .append(WordUtils.capitalize(this.label.replaceAll("_", " ")))
-            .append("\n\n\n")
-            .append("### List\n");
+        PageBuilder builder = new PageBuilder();
+        builder.addTitle(WordUtils.capitalize(this.label.replaceAll("_", " ")))
+            .newLine().newLine().newLine()
+            .addTitle3("List");
 
         for (DockyEntry dockyEntry : DockyRegistry.entries()) {
             String name = dockyEntry.getFactory().getSerializerId().getPath();
             String subfolder = dockyEntry.getType();
 
             if(this.label.equals(subfolder)) {
-                builder.append("\n * [")
-                    .append(WordUtils.capitalize(name.replace(".md", "").replaceAll("_", " ")))
-                    .append("](")
-                    .append(subfolder)
-                    .append("/")
-                    .append(name)
-                    .append(".md)");
+                builder.addListElement("[" + WordUtils.capitalize(name.replace(".md", "").replaceAll("_", " ")) + "](" + subfolder + "/" + name + ".md)");
             }
         }
         return builder.toString();

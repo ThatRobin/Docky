@@ -3,7 +3,7 @@ package io.github.thatrobin.docky.utils;
 import java.util.Arrays;
 import java.util.List;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "unchecked"})
 public class MkdocsBuilder {
 
     private final StringBuilder contents = new StringBuilder();
@@ -43,7 +43,6 @@ public class MkdocsBuilder {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public void addGroup(DocEntry entry) {
         this.contents.append("\n");
         indent();

@@ -1,31 +1,26 @@
 package io.github.thatrobin.docky.providers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import io.github.apace100.calio.data.SerializableData;
 import io.github.apace100.calio.data.SerializableDataType;
 import io.github.thatrobin.docky.DockyEntry;
 import io.github.thatrobin.docky.DockyGenerator;
 import io.github.thatrobin.docky.mixin.SerializableDataTypeAccessor;
 import io.github.thatrobin.docky.utils.DataTypeRedirector;
+import io.github.thatrobin.docky.utils.PageBuilder;
 import io.github.thatrobin.docky.utils.SerializableDataExt;
 import io.github.thatrobin.docky.utils.SerializableDataTypesRegistry;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.data.DataWriter;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
 import org.apache.commons.lang3.text.WordUtils;
 
-import java.io.FileReader;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
-@SuppressWarnings({"unused", "unchecked", "rawtypes"})
+@SuppressWarnings({"unused", "deprecation"})
 public class DockyEntryProvider extends DockyDataProvider {
 
     public FabricDataOutput dataOutput;
@@ -52,33 +47,27 @@ public class DockyEntryProvider extends DockyDataProvider {
         String description = entry.getDescription();
         String path = entry.getExamplePath();
 
-
         Identifier id = factory.getSerializerId();
 
-        StringBuilder builder = new StringBuilder();
-        builder.append("# ")
-            .append(WordUtils.capitalize(id.getPath().replaceAll("_", " ")))
-            .append("\n[")
-            .append(WordUtils.capitalize(prefix.replaceAll("_", " ")))
-            .append("](../")
-            .append(prefix)
-            .append("_types.md)\n");
+        PageBuilder pageBuilder = new PageBuilder();
+        pageBuilder.addTitle(WordUtils.capitalize(id.getPath().replaceAll("_", " ")))
+            .addLink(WordUtils.capitalize(prefix.replaceAll("_", " ")), "../" + prefix + ".md");
 
         if (description != null) {
-            builder.append("\n")
-                .append(description)
-                .append("\n");
+            pageBuilder.addText(description);
         }
-        builder.append("\nType ID: " + "`")
-            .append(id)
-            .append("`\n### Fields\nField | Type | Default | Description\n------|------|---------|-------------\n");
+        pageBuilder.addText("Type ID: `" + id)
+            .addTitle3("Fields");
+
+        PageBuilder.TableBuilder tableBuilder = new PageBuilder.TableBuilder();
+        tableBuilder.addRow("Field", "Type", "Default", "Description")
+            .addBreak();
 
         SerializableData data = factory.getSerializableData();
         for (String fieldName : data.getFieldNames()) {
+            String[] row = new String[4];
             if(!fieldName.equals("condition") && !fieldName.equals("inverted")) {
-                builder.append("`")
-                    .append(fieldName)
-                    .append("` | ");
+                row[0] = "`" + fieldName + "`";
                 SerializableData.Field<?> field = data.getField(fieldName);
                 SerializableDataType<?> type = field.getDataType();
                 for (Class<?> clazz : SerializableDataTypesRegistry.entries()) {
@@ -87,33 +76,25 @@ public class DockyEntryProvider extends DockyDataProvider {
                             Object obj = field1.get(null);
                             SerializableDataType<?> type2 = (SerializableDataType<?>) obj;
                             if (type2.equals(type)) {
-                                if (!((SerializableDataTypeAccessor) type2).getDataClass().isAssignableFrom(List.class)) {
-                                    builder.append("[");
-                                    if (DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
-                                        builder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
-                                            .append("](")
-                                            .append(DataTypeRedirector.get().get(field1.getName().toLowerCase()))
-                                            .append(")");
-                                    } else {
-                                        builder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
-                                            .append("](../data_types/")
-                                            .append(field1.getName().toLowerCase(Locale.ROOT))
-                                            .append(".md)");
-                                    }
-                                } else {
-                                    builder.append("[Array](../data_types/array.md) of [");
-                                    if(DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
-                                        builder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
-                                            .append("](")
-                                            .append(DataTypeRedirector.get().get(field1.getName().toLowerCase()))
-                                            .append(")");
-                                    } else {
-                                        builder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
-                                            .append("](../data_types/")
-                                            .append(field1.getName().toLowerCase(Locale.ROOT).replaceAll("(s)(?!\\S)", ""))
-                                            .append(".md)");
-                                    }
+                                StringBuilder typeBuilder = new StringBuilder();
+                                String temp = field1.getName().toLowerCase(Locale.ROOT);
+                                typeBuilder.append("[");
+                                if (!((SerializableDataTypeAccessor<?>) type2).getDataClass().isAssignableFrom(List.class)) {
+                                    typeBuilder.append("Array](../data_types/array.md) of [");
+                                    temp = temp.replaceAll("(s)(?!\\S)", "");
                                 }
+                                if (DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
+                                    typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
+                                        .append("](")
+                                        .append(DataTypeRedirector.get().get(field1.getName().toLowerCase()))
+                                        .append(")");
+                                } else {
+                                    typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
+                                        .append("](../data_types/")
+                                        .append(field1.getName().toLowerCase(Locale.ROOT))
+                                        .append(".md)");
+                                }
+                                row[1] = typeBuilder.toString();
                             }
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
@@ -124,46 +105,33 @@ public class DockyEntryProvider extends DockyDataProvider {
                 try {
                     Object defaultVal = field.getDefault(null);
                     if (defaultVal != null) {
-                        builder.append(" | ")
-                            .append(defaultVal)
-                            .append(" | ");
+                        row[2] = (String)defaultVal;
                     } else {
-                        builder.append(" | _optional_ | ");
+                        row[2] = "_optional_";
                     }
                 } catch (Exception e) {
-                    builder.append(" | _optional_ | ");
+                    row[2] = "_optional_";
                 }
                 if (data instanceof SerializableDataExt) {
                     SerializableDataExt ext = (SerializableDataExt) data;
-                    builder.append(ext.getDescription(fieldName));
+                    row[3] = ext.getDescription(fieldName);
+                } else {
+                    row[3] = "";
                 }
-                builder.append("\n");
+                tableBuilder.addRow(row);
             }
         }
+        pageBuilder.addTable(tableBuilder);
+
         if(path != null) {
             try {
-                builder.append("\n### Example\n```json\n");
-
-                String exampleDescription = "";
-                try {
-                    Object obj = JsonParser.parseReader(new FileReader(path));
-                    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                    JsonObject jsonObject = (JsonObject)obj;
-                    if(jsonObject.has("example_description")) {
-                        exampleDescription = JsonHelper.getString(jsonObject, "example_description");
-                        jsonObject.remove("example_description");
-                    }
-                    builder.append(gson.toJson(jsonObject).replaceAll("\t", "   "));
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
-                builder.append("\n```\n")
-                    .append(exampleDescription);
+                pageBuilder.addTitle3("Example")
+                    .addJson(path);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return builder.toString();
+        return pageBuilder.toString();
     }
 
     private Path getFilePath() {

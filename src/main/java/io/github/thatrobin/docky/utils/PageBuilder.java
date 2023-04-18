@@ -4,11 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.github.thatrobin.docky.Docky;
 import net.minecraft.util.JsonHelper;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public class PageBuilder {
 
     private final StringBuilder contents = new StringBuilder();
@@ -31,12 +33,22 @@ public class PageBuilder {
         return this;
     }
 
-    public PageBuilder addSubTitle(String name) {
-        return addSubTitle(name, true);
+    public PageBuilder addTitle2(String name) {
+        return addTitle2(name, true);
     }
 
-    public PageBuilder addSubTitle(String name, boolean newLine) {
+    public PageBuilder addTitle2(String name, boolean newLine) {
         this.contents.append("## ").append(name);
+        if(newLine) newLine();
+        return this;
+    }
+
+    public PageBuilder addTitle3(String name) {
+        return addTitle3(name, true);
+    }
+
+    public PageBuilder addTitle3(String name, boolean newLine) {
+        this.contents.append("### ").append(name);
         if(newLine) newLine();
         return this;
     }
@@ -87,7 +99,7 @@ public class PageBuilder {
             }
             this.contents.append(gson.toJson(jsonObject).replaceAll("\t", "   "));
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            Docky.LOGGER.warn("Example not found at: " + path);
         }
         this.contents.append("\n```\n")
             .append(exampleDescription);
@@ -107,12 +119,20 @@ public class PageBuilder {
         return this;
     }
 
+    public PageBuilder addListElement(String name) {
+        return addListElement(name, true);
+    }
+
+    public PageBuilder addListElement(String name, boolean newLine) {
+        this.contents.append("* ").append(name);
+        if(newLine) newLine();
+        return this;
+    }
+
     public PageBuilder newLine() {
         this.contents.append("\n");
         return this;
     }
-
-
 
     public static class TableBuilder {
 

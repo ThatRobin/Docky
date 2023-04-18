@@ -66,7 +66,7 @@ public class DataTypeLoader {
             .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) used to specify how a value should be modified.");
 
-        pageBuilder.addSubTitle("Fields");
+        pageBuilder.addTitle3("Fields");
 
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Field", "Type", "Default", "Description")
@@ -88,7 +88,7 @@ public class DataTypeLoader {
             .addText("A [String](string.md) used to specify the operation used by [Attribute Modifiers](attribute_modifier.md).")
             .addNote("The listed values are ordered based on the order of priority; with `add_base_early` being applied before the other modifiers and `set_total` being applied last.");
 
-        pageBuilder.addSubTitle("Values");
+        pageBuilder.addTitle3("Values");
 
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Value", "Description")
@@ -116,7 +116,7 @@ public class DataTypeLoader {
             .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) used to specify how a specific attribute should be modified. Basically an [Attribute Modifier](attribute_modifier.md) with an additional `attribute` field.");
 
-        pageBuilder.addSubTitle("Fields");
+        pageBuilder.addTitle3("Fields");
 
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Field", "Type", "Default", "Description")
@@ -137,7 +137,7 @@ public class DataTypeLoader {
             .addText("A [string](string.md) used to specify the operation used by [Attributed Attribute Modifiers](attributed_attribute_modifier.md).")
             .addNote("The listed values are ordered based on the order of priority; with `addition` being applied before `multiply_base` and `multiply_total` being applied last.");
 
-        pageBuilder.addSubTitle("Values");
+        pageBuilder.addTitle3("Values");
 
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Value", "Description")
@@ -165,7 +165,7 @@ public class DataTypeLoader {
             .addLink("Data Type", "../data_types.md").newLine()
             .addText("A [String](string.md) which specifies how two numbers should be compared. Usually the first number is provided by whatever condition you are in, and the second is specified in an accompanying `compare_to` field.");
 
-        pageBuilder.addSubTitle("Values");
+        pageBuilder.addTitle3("Values");
 
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Value", "Description")
@@ -187,7 +187,7 @@ public class DataTypeLoader {
             .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) specifying a shapeless or shaped crafting recipe. For some more information, view [the page on recipes on the MC wiki](https://minecraft.gamepedia.com/Recipe).");
 
-        pageBuilder.addSubTitle("Fields (both types)");
+        pageBuilder.addTitle3("Fields (both types)");
 
         PageBuilder.TableBuilder tableBuilderBothTypes = PageBuilder.TableBuilder.init();
         tableBuilderBothTypes.addRow("Field", "Type", "Default", "Description")
@@ -197,7 +197,7 @@ public class DataTypeLoader {
             .addRow("`result`", "[Object](object.md) with an `item` [ID](identifier.md) and `count` [Integer](integer.md)", "", "The result of the crafting. **Note that vanilla does _not_ support NBT tags in the result.**");
         pageBuilder.addTable(tableBuilderBothTypes);
 
-        pageBuilder.addSubTitle("Fields (shapeless)");
+        pageBuilder.addTitle3("Fields (shapeless)");
 
         PageBuilder.TableBuilder tableBuilderShapeless = PageBuilder.TableBuilder.init();
         tableBuilderShapeless.addRow("Field", "Type", "Default", "Description")
@@ -205,7 +205,7 @@ public class DataTypeLoader {
             .addRow("`ingredients`", "[Array](array.md) of [Ingredient](ingredient.md)", "", "The items that need to be put in the crafting grid for the recipe.");
         pageBuilder.addTable(tableBuilderShapeless);
 
-        pageBuilder.addSubTitle("Fields (shaped)");
+        pageBuilder.addTitle3("Fields (shaped)");
 
         PageBuilder.TableBuilder tableBuilderShaped = PageBuilder.TableBuilder.init();
         tableBuilderShaped.addRow("Field", "Type", "Default", "Description")
@@ -223,7 +223,7 @@ public class DataTypeLoader {
             .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) used to specify how to deal damage to an entity.");
 
-        pageBuilder.addSubTitle("Fields");
+        pageBuilder.addTitle3("Fields");
 
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Field", "Type", "Default", "Description")
@@ -254,7 +254,7 @@ public class DataTypeLoader {
             .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) used to define how a resource or cooldown bar should be rendered.");
 
-        pageBuilder.addSubTitle("Fields");
+        pageBuilder.addTitle3("Fields");
 
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Field", "Type", "Default", "Description")
@@ -293,7 +293,7 @@ public class DataTypeLoader {
                 "\n" +
                 "_Or_: an [Array](array.md) of [Objects](object.md) specifying a registered item or item tag.");
 
-        pageBuilder.addSubTitle("Fields");
+        pageBuilder.addTitle3("Fields");
 
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Field", "Type", "Default", "Description")
@@ -321,7 +321,7 @@ public class DataTypeLoader {
             .addText("A [string](string.md) that represents a slot from an entity or container's inventory.")
             .addNote("It's recommended to use the `container.<slot_number>` item slots for representing the slots of a power that uses the [Inventory (Power Type)](../power_types/inventory.md)");
 
-        pageBuilder.addSubTitle("Fields");
+        pageBuilder.addTitle3("Fields");
 
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Name", "Valid `<slot_number>`", "Mapped index")
@@ -352,7 +352,7 @@ public class DataTypeLoader {
             .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) which defines a new item stack.");
 
-        pageBuilder.addSubTitle("Fields");
+        pageBuilder.addTitle3("Fields");
 
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Field", "Type", "Default", "Description")
@@ -371,7 +371,7 @@ public class DataTypeLoader {
             .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) which defines a keybinding, used in active powers to define which key they react to.");
 
-        pageBuilder.addSubTitle("Fields");
+        pageBuilder.addTitle3("Fields");
 
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Field", "Type", "Default", "Description")
@@ -399,7 +399,7 @@ public class DataTypeLoader {
             .addText("A data type that's either a [string](string.md) which defines only the particle type or an [object](object.md) which defines the particle type and its additional parameters.")
             .addNote("Refer to the [Minecraft Fandom Wiki: Particles (Particle IDs)](https://minecraft.fandom.com/wiki/Particles#Particle_IDs) page for a list of **vanilla** particle type IDs that you can use.");
 
-        pageBuilder.addSubTitle("Fields");
+        pageBuilder.addTitle3("Fields");
 
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Field", "Type", "Default", "Description")
@@ -417,7 +417,7 @@ public class DataTypeLoader {
             .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) which defines a new item stack alongside a position in an inventory. Basically an [Item Stack](item_stack.md) with a `slot` field.");
 
-        pageBuilder.addSubTitle("Fields");
+        pageBuilder.addTitle3("Fields");
 
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Field", "Type", "Default", "Description")
@@ -438,7 +438,7 @@ public class DataTypeLoader {
             .addText("An [object](object.md) specifying a statistic via a statistic type and an [identifier](identifier.md).")
             .addNote("See [Minecraft Fandom Wiki: Statistic (Resource location)](https://minecraft.fandom.com/wiki/Statistics#Resource_location) for a list of vanilla statistic types and names.");
 
-        pageBuilder.addSubTitle("Fields");
+        pageBuilder.addTitle3("Fields");
 
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Field", "Type", "Default", "Description")
@@ -456,7 +456,7 @@ public class DataTypeLoader {
             .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) used to define a status effect with duration, amplifier, etc.");
 
-        pageBuilder.addSubTitle("Fields");
+        pageBuilder.addTitle3("Fields");
 
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Field", "Type", "Default", "Description")
@@ -497,7 +497,7 @@ public class DataTypeLoader {
             .addLink("Data Type", "../data_types.md").newLine()
             .addText("An [Object](object.md) that specifies the X, Y and Z coordinates of a certain point in space.");
 
-        pageBuilder.addSubTitle("Fields");
+        pageBuilder.addTitle3("Fields");
 
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Field", "Type", "Default", "Description")

@@ -3,7 +3,6 @@ package io.github.thatrobin.docky.utils;
 import com.google.gson.JsonElement;
 import io.github.apace100.calio.data.SerializableData;
 import io.github.apace100.calio.data.SerializableDataType;
-import io.github.thatrobin.docky.Docky;
 import io.github.thatrobin.docky.mixin.SerializableDataTypeAccessor;
 import net.minecraft.network.PacketByteBuf;
 import org.apache.commons.lang3.text.WordUtils;
@@ -11,11 +10,11 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+@SuppressWarnings({"unused", "deprecation"})
 public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
 
     public SerializableDataTypeExt(Class<T> dataClass, BiConsumer<PacketByteBuf, T> send, Function<PacketByteBuf, T> receive, Function<JsonElement, T> read) {
@@ -31,13 +30,13 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
     }
 
     public static PageBuilder generatePage(String title, String description, SerializableDataExt dataExt, String examplePath) {
-        PageBuilder builder = new PageBuilder();
-        builder.addTitle(WordUtils.capitalize(title.replaceAll("_", " ")));
-        builder.addText("[Data Type](../data_types.md)").newLine();
+        PageBuilder pageBuilder = new PageBuilder();
+        pageBuilder.addTitle(WordUtils.capitalize(title.replaceAll("_", " ")));
+        pageBuilder.addLink("Data Type", "../data_types.md").newLine();
 
-        builder.addText(description);
+        pageBuilder.addText(description);
 
-        builder.addSubTitle("Fields");
+        pageBuilder.addTitle3("Fields");
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Field", "Type", "Default", "Description")
             .addBreak();
@@ -57,7 +56,7 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
                                     StringBuilder typeBuilder = new StringBuilder();
                                     String temp = field1.getName().toLowerCase(Locale.ROOT);
                                     typeBuilder.append("[");
-                                    if (((SerializableDataTypeAccessor) type2).getDataClass().isAssignableFrom(List.class)) {
+                                    if (((SerializableDataTypeAccessor<?>) type2).getDataClass().isAssignableFrom(List.class)) {
                                         typeBuilder.append("Array](../data_types/array.md) of [");
                                         temp = temp.replaceAll("(s)(?!\\S)", "");
                                     }
@@ -94,13 +93,15 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
                 tableBuilder.addRow(row);
             }
         }
-        builder.addTable(tableBuilder);
+        pageBuilder.addTable(tableBuilder);
 
-        if(!examplePath.equals("")) {
-            builder.addSubTitle("Example");
-            builder.addJson(examplePath);
+        if(examplePath != null) {
+            try {
+                pageBuilder.addTitle3("Example");
+                pageBuilder.addJson(examplePath);
+            } catch(Exception ignored) {}
         }
-        return builder;
+        return pageBuilder;
     }
 
 

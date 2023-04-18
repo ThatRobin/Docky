@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+@SuppressWarnings({"unused"})
 public class DataTypeRedirector {
 
     private static final Map<String, String> DATA_TYPES = new TreeMap<>();

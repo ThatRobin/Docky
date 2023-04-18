@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "deprecation"})
 public class DockyDataTypeContentsPageProvider extends DockyDataProvider {
 
     public final FabricDataOutput dataOutput;
@@ -31,22 +31,15 @@ public class DockyDataTypeContentsPageProvider extends DockyDataProvider {
     }
 
     String generateContentsPages() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("# Data Types")
-            .append("\n\n\n")
-            .append("### List\n");
+        PageBuilder builder = new PageBuilder();
+        builder.addTitle("Data Types")
+            .newLine().newLine().newLine()
+            .addTitle3("List");
 
         for (Map.Entry<String, PageBuilder> builderEntry : DataTypeRegistry.entries()) {
             String name = builderEntry.getKey();
-            PageBuilder subfolder = builderEntry.getValue();
-
-            builder.append("\n * [")
-                .append(WordUtils.capitalize(name.replaceAll("_", " ")))
-                .append("](")
-                .append("data_types")
-                .append("/")
-                .append(name)
-                .append(".md)");
+            String listElement = "[" + WordUtils.capitalize(name.replaceAll("_", " ")) + "](data_types/" + name + ".md)";
+            builder.addListElement(listElement);
         }
         return builder.toString();
     }
