@@ -4,7 +4,7 @@ import io.github.apace100.calio.data.SerializableDataType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(SerializableDataType.class)
+@Mixin(value = SerializableDataType.class, remap = false)
 public interface SerializableDataTypeAccessor<T> {
 
     @Accessor("dataClass")
