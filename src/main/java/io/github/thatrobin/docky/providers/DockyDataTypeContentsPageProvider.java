@@ -41,7 +41,7 @@ public class DockyDataTypeContentsPageProvider extends DockyDataProvider {
             String listElement = "[" + WordUtils.capitalize(name.replaceAll("_", " ")) + "](data_types/" + name + ".md)";
             builder.addListElement(listElement);
         }
-        return builder.toString();
+        return builder.build();
     }
 
     private Path getFilePath() {
