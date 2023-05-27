@@ -51,12 +51,12 @@ public class DockyEntryProvider extends DockyDataProvider {
 
         PageBuilder pageBuilder = new PageBuilder();
         pageBuilder.addTitle(WordUtils.capitalize(id.getPath().replaceAll("_", " ")))
-            .addLink(WordUtils.capitalize(prefix.replaceAll("_", " ")), "../" + prefix + ".md");
+            .addLink(WordUtils.capitalize(prefix.replaceAll("_", " ")), "../" + prefix + ".md").newLine();
 
         if (description != null) {
-            pageBuilder.addText(description);
+            pageBuilder.addText(description).newLine();
         }
-        pageBuilder.addText("Type ID: `" + id)
+        pageBuilder.addText("Type ID: `" + id + "`")
             .addTitle3("Fields");
 
         PageBuilder.TableBuilder tableBuilder = new PageBuilder.TableBuilder();
