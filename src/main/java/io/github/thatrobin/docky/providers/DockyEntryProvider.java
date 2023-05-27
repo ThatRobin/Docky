@@ -131,7 +131,7 @@ public class DockyEntryProvider extends DockyDataProvider {
                 e.printStackTrace();
             }
         }
-        return pageBuilder.toString();
+        return pageBuilder.build();
     }
 
     private Path getFilePath() {
