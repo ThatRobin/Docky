@@ -1,15 +1,29 @@
 package io.github.thatrobin.docky.utils;
 
+import com.google.common.collect.BiMap;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSyntaxException;
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import io.github.apace100.calio.ClassUtil;
 import io.github.apace100.calio.data.SerializableData;
 import io.github.apace100.calio.data.SerializableDataType;
+import io.github.apace100.calio.data.SerializableDataTypes;
+import io.github.apace100.calio.util.ArgumentWrapper;
+import io.github.apace100.calio.util.TagLike;
 import io.github.thatrobin.docky.mixin.SerializableDataTypeAccessor;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.tag.TagKey;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Locale;
+import java.lang.reflect.ParameterizedType;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -22,14 +36,55 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
     }
 
     public static <T> SerializableDataType<T> compound(String title, String description, Class<T> dataClass, SerializableDataExt data, Function<SerializableData.Instance, T> toInstance, BiFunction<SerializableData, T, SerializableData.Instance> toData, String examplePath) {
-        DataTypeRegistry.register(title, generatePage(title, description, data, examplePath));
-        return new SerializableDataType<>(dataClass,
-            (buf, t) -> data.write(buf, toData.apply(data, t)),
-            (buf) -> toInstance.apply(data.read(buf)),
-            (json) -> toInstance.apply(data.read(json.getAsJsonObject())));
+        DataTypeRegistry.register(title, generateCompoundPage(title, description, data, examplePath));
+        return SerializableDataType.compound(dataClass, data, toInstance, toData);
     }
 
-    public static PageBuilder generatePage(String title, String description, SerializableDataExt dataExt, String examplePath) {
+    public static <T> SerializableDataType<T> mapped(String title, String description, Class<T> dataClass, BiMap<String, T> map) {
+        DataTypeRegistry.register(title, generateMappedPage(title, description, map));
+        return SerializableDataType.mapped(dataClass, map);
+    }
+
+    public static <T> SerializableDataType<T> registry(String title, String description, Class<T> dataClass, Registry<T> registry) {
+        DataTypeRegistry.register(title, generateRegistryPage(title, description));
+        return SerializableDataType.registry(dataClass, registry);
+    }
+
+    public static <T extends Enum<T>> SerializableDataType<T> enumValue(String title, String description, Class<T> dataClass) {
+        return enumValue(title, description, dataClass, null);
+    }
+
+    public static <T extends Enum<T>> SerializableDataType<T> enumValue(String title, String description, Class<T> dataClass, HashMap<String, T> additionalMap) {
+        DataTypeRegistry.register(title, generateEnumPage(title, description, dataClass));
+        return SerializableDataType.enumValue(dataClass, additionalMap);
+    }
+
+    public static <T, U> SerializableDataType<T> wrap(String title, Class<T> dataClass, SerializableDataType<U> base, Function<T, U> toFunction, Function<U, T> fromFunction) {
+        DataTypeRegistry.register(title, DataTypeRegistry.get().get(((ParameterizedType)base.getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName().toLowerCase()));
+        return SerializableDataType.wrap(dataClass, base, toFunction, fromFunction);
+    }
+
+    public static <T> SerializableDataType<TagKey<T>> tag(String title, RegistryKey<? extends Registry<T>> registryKey) {
+        DataTypeRegistry.register(title, DataTypeRegistry.get().get("identifier"));
+        return SerializableDataType.tag(registryKey);
+    }
+
+    public static <T> SerializableDataType<RegistryKey<T>> registryKey(String title, RegistryKey<Registry<T>> registryKeyRegistry) {
+        DataTypeRegistry.register(title, DataTypeRegistry.get().get("identifier"));
+        return SerializableDataType.registryKey(registryKeyRegistry);
+    }
+
+    public static <T extends Enum<T>> SerializableDataType<EnumSet<T>> enumSet(String title, Class<T> enumClass, SerializableDataType<T> enumDataType) {
+        DataTypeRegistry.register(title, DataTypeRegistry.get().get("string"));
+        return SerializableDataType.enumSet(enumClass, enumDataType);
+    }
+
+    public static <T, U extends ArgumentType<T>> SerializableDataType<ArgumentWrapper<T>> argumentType(String title, U argumentType) {
+        DataTypeRegistry.register(title, DataTypeRegistry.get().get("string"));
+        return SerializableDataType.argumentType(argumentType);
+    }
+
+    public static PageBuilder generateCompoundPage(String title, String description, SerializableDataExt dataExt, String examplePath) {
         PageBuilder pageBuilder = new PageBuilder();
         pageBuilder.addTitle(WordUtils.capitalize(title.replaceAll("_", " ")));
         pageBuilder.addLink("Data Type", "../data_types.md").newLine();
@@ -104,5 +159,63 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
         return pageBuilder;
     }
 
+    public static <T> PageBuilder generateMappedPage(String title, String description, BiMap<String, T> map) {
+        PageBuilder pageBuilder = new PageBuilder();
+        pageBuilder.addTitle(WordUtils.capitalize(title.replaceAll("_", " ")));
+        pageBuilder.addLink("Data Type", "../data_types.md").newLine();
+
+        pageBuilder.addText(description);
+
+        pageBuilder.addTitle3("Fields");
+        PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
+        tableBuilder.addRow("Name", "Description")
+            .addBreak();
+
+        for (Map.Entry<String, T> stringTEntry : map.entrySet()) {
+            String[] row = new String[2];
+            row[0] = stringTEntry.getKey();
+            tableBuilder.addRow(row);
+
+        }
+        pageBuilder.addTable(tableBuilder);
+
+        return pageBuilder;
+    }
+
+    public static PageBuilder generateRegistryPage(String title, String description) {
+        PageBuilder pageBuilder = new PageBuilder();
+        pageBuilder.addTitle(WordUtils.capitalize(title.replaceAll("_", " ")));
+        pageBuilder.addLink("Data Type", "../data_types.md").newLine();
+
+        pageBuilder.addText(description);
+
+        return pageBuilder;
+    }
+
+    public static <T extends Enum<T>> PageBuilder generateEnumPage(String title, String description, Class<T> dataClass) {
+        PageBuilder pageBuilder = new PageBuilder();
+        pageBuilder.addTitle(WordUtils.capitalize(title.replaceAll("_", " ")));
+        pageBuilder.addLink("Data Type", "../data_types.md").newLine();
+
+        pageBuilder.addText(description);
+
+        T[] enumValues = dataClass.getEnumConstants();
+
+        pageBuilder.addTitle3("Fields");
+        PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
+        tableBuilder.addRow("Name", "Description")
+            .addBreak();
+
+        for (T enumValue : enumValues) {
+            String[] row = new String[2];
+            row[0] = enumValue.name();
+            tableBuilder.addRow(row);
+        }
+        pageBuilder.addTable(tableBuilder);
+
+
+
+        return pageBuilder;
+    }
 
 }
