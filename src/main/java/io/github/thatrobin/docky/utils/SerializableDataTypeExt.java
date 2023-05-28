@@ -161,7 +161,7 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
         pageBuilder.addTitle3("Fields");
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Name", "Description")
-            .addBreak();
+            .addBreak(2);
 
         for (Map.Entry<String, T> stringTEntry : map.entrySet()) {
             String[] row = new String[2];
@@ -196,7 +196,7 @@ public class SerializableDataTypeExt<T> extends SerializableDataType<T> {
         pageBuilder.addTitle3("Fields");
         PageBuilder.TableBuilder tableBuilder = PageBuilder.TableBuilder.init();
         tableBuilder.addRow("Name", "Description")
-            .addBreak();
+            .addBreak(2);
 
         for (T enumValue : enumValues) {
             String[] row = new String[2];
