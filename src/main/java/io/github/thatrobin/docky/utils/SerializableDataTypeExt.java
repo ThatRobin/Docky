@@ -1,19 +1,11 @@
 package io.github.thatrobin.docky.utils;
 
 import com.google.common.collect.BiMap;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSyntaxException;
-import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.github.apace100.calio.ClassUtil;
 import io.github.apace100.calio.data.SerializableData;
 import io.github.apace100.calio.data.SerializableDataType;
-import io.github.apace100.calio.data.SerializableDataTypes;
 import io.github.apace100.calio.util.ArgumentWrapper;
-import io.github.apace100.calio.util.TagLike;
 import io.github.thatrobin.docky.mixin.SerializableDataTypeAccessor;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registry;
