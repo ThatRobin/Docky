@@ -157,7 +157,15 @@ public class PageBuilder {
         }
 
         public TableBuilder addBreak() {
-            content.append("|---|---|---|---|\n");
+            return addBreak(4);
+        }
+
+        public TableBuilder addBreak(int rows) {
+            content.append("|");
+            for (int i = 0; i < rows; i++) {
+                content.append("---|");
+            }
+            content.append("\n");
             return this;
         }
 
