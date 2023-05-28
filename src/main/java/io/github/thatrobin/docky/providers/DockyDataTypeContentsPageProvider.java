@@ -8,8 +8,12 @@ import net.minecraft.data.DataWriter;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({"unused", "deprecation"})
 public class DockyDataTypeContentsPageProvider extends DockyDataProvider {
@@ -35,8 +39,9 @@ public class DockyDataTypeContentsPageProvider extends DockyDataProvider {
         builder.addTitle("Data Types")
             .newLine().newLine().newLine()
             .addTitle3("List");
-
-        for (Map.Entry<String, PageBuilder> builderEntry : DataTypeRegistry.entries()) {
+        Set<Map.Entry<String, PageBuilder>> entries = DataTypeRegistry.entries();
+        List<Map.Entry<String, PageBuilder>> listEntries = entries.stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toList());
+        for (Map.Entry<String, PageBuilder> builderEntry : listEntries) {
             String name = builderEntry.getKey();
             String listElement = "[" + WordUtils.capitalize(name.replaceAll("_", " ")) + "](data_types/" + name + ".md)";
             builder.addListElement(listElement);
