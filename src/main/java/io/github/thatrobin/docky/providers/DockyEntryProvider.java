@@ -79,19 +79,19 @@ public class DockyEntryProvider extends DockyDataProvider {
                                 StringBuilder typeBuilder = new StringBuilder();
                                 String temp = field1.getName().toLowerCase(Locale.ROOT);
                                 typeBuilder.append("[");
-                                if (!((SerializableDataTypeAccessor<?>) type2).getDataClass().isAssignableFrom(List.class)) {
+                                if (((SerializableDataTypeAccessor<?>) type2).getDataClass().isAssignableFrom(List.class)) {
                                     typeBuilder.append("Array](../data_types/array.md) of [");
                                     temp = temp.replaceAll("(s)(?!\\S)", "");
                                 }
                                 if (DataTypeRedirector.get().containsKey(field1.getName().toLowerCase())) {
-                                    typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
+                                    typeBuilder.append(WordUtils.capitalize(temp.replaceAll("_", " ")))
                                         .append("](")
-                                        .append(DataTypeRedirector.get().get(field1.getName().toLowerCase()))
+                                        .append(DataTypeRedirector.get().get(temp))
                                         .append(")");
                                 } else {
-                                    typeBuilder.append(WordUtils.capitalize(field1.getName().replaceAll("_", " ").toLowerCase(Locale.ROOT)))
+                                    typeBuilder.append(WordUtils.capitalize(temp.replaceAll("_", " ")))
                                         .append("](../data_types/")
-                                        .append(field1.getName().toLowerCase(Locale.ROOT))
+                                        .append(temp)
                                         .append(".md)");
                                 }
                                 row[1] = typeBuilder.toString();
